@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] protected Data _data;
     [SerializeField] protected CharacterController _controller;
     [SerializeField] protected float _movementSpeed;
     [SerializeField] protected Transform _body;
