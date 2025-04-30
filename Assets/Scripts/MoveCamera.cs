@@ -4,14 +4,14 @@ public class MoveCamera : MonoBehaviour
 {
     private Camera _camera;
     [SerializeField] private string _tag = "RunningCamera";
-    [SerializeField] private Rect _vieuwRectangle = new Rect(0, 0, 0.5f, 1);
+    [SerializeField] private Rect _viewRectangle = new Rect(0, 0, 0.5f, 1);
     private void Awake()
     {
         _camera = GameObject.FindGameObjectWithTag(_tag).GetComponent<Camera>();
     }
     void Start()
     {
-        _camera.rect = _vieuwRectangle;
+        _camera.rect = _viewRectangle;
     }
     void Update()
     {
