@@ -7,7 +7,6 @@ public class P2Controller : MonoBehaviour
     private Rigidbody _rb;
 
     //stats vars
-    private int _maxMoveRange = 22;
     private float _moveSpeed = 1000f;
 
     //script vars
@@ -28,6 +27,7 @@ public class P2Controller : MonoBehaviour
         _rb.linearVelocity = new Vector3(-moveInput.x * _moveSpeed * Time.fixedDeltaTime, 0, 0);
     }
 
+    //when joystick is moved update value
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();

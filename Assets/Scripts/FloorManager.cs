@@ -6,7 +6,7 @@ public class FloorManager : MonoBehaviour
     [SerializeField] private GameObject _tilePrefab;
 
     //stats vars
-    private int _trackLength = 110;
+    private int _trackLength = 110; //total length of the moving floor
     private int _trackStartX = -50; //track will go to x -50
     private float _floorSpeed = 5f;
 
@@ -20,6 +20,7 @@ public class FloorManager : MonoBehaviour
 
     private void Start()
     {
+        //spawn floor tiles
         for (int i = 0; i < _floorTiles.Length; i++)
         {
             Vector3 position = new Vector3(0, 0, i*10 + _trackStartX);
@@ -34,11 +35,12 @@ public class FloorManager : MonoBehaviour
 
     void UpdateFloor()
     {
+        //move tiles
         foreach (GameObject tile in _floorTiles)
         {
             tile.transform.position += Vector3.back * _floorSpeed * Time.fixedDeltaTime;
             if (tile.transform.position.z < _trackStartX)
-                tile.transform.position += new Vector3(0, 0, _trackLength);
+                tile.transform.position += new Vector3(0, 0, _trackLength); //reset tile to the back once needed
         }
     }
 }

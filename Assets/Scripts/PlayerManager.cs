@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         var gamepads = Gamepad.all; //get all controllers
-        //assign controller
+        //players need to spawn this way cuz of the connection to their respective controllers
         PlayerInput.Instantiate(_p1Prefab, playerIndex: 0, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[0]);
         PlayerInput.Instantiate(_p2Prefab, playerIndex: 1, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[1]);
     }

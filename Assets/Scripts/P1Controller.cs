@@ -27,6 +27,7 @@ public class P1Controller : MonoBehaviour
         _rb.linearVelocity = new Vector3(moveInput.x * _moveSpeed * Time.fixedDeltaTime, 0, 0);
     }
 
+    //when joystick is moved update value
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
