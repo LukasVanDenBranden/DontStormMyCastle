@@ -6,9 +6,9 @@ public class FloorManager : MonoBehaviour
     [SerializeField] private GameObject _tilePrefab;
 
     //stats vars
-    private int _trackLength = 110; //total length of the moving floor
-    private int _trackStartX = -50; //track will go to x -50
-    private float _floorSpeed = 5f;
+    private readonly int _trackLength = 110; //total length of the moving floor
+    private readonly int _trackStartX = -50; //track will go to x -50
+    private readonly float _floorSpeed = 5f;
 
     //script vars
     private GameObject[] _floorTiles;

@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a90243118ad84f4e8fcefc054f02000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _boulderPrefab: {fileID: 502652657922175749, guid: e71fa27dde09e7e4a93bdeda8de06ec5, type: 3}
 --- !u!54 &8679411339773428704
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -73,7 +74,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &1219603116694783209
 MonoBehaviour:
@@ -115,10 +116,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1143143960189333014}
   - component: {fileID: 5152879951560356723}
-  - component: {fileID: 3413498784488694700}
   - component: {fileID: 5248284934612574741}
   m_Layer: 0
-  m_Name: RunningP2
+  m_Name: CameraP2
   m_TagString: RunningCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,14 +190,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &3413498784488694700
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3796300226769720701}
-  m_Enabled: 1
 --- !u!114 &5248284934612574741
 MonoBehaviour:
   m_ObjectHideFlags: 0

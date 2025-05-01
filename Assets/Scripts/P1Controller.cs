@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,12 +6,15 @@ public class P1Controller : MonoBehaviour
 {
     //outside connections
     private Rigidbody _rb;
+    private Camera _Camera;
 
     //stats vars
-    private float _moveSpeed = 1000f;
+    private readonly float _moveSpeed = 1000f;
 
     //script vars
-    private Vector2 moveInput;
+    private Vector2 _moveInput;
+    private Vector2 _rotateInput;
+    private bool _primaryInput = false;
 
     private void Awake()
     {
@@ -24,12 +28,20 @@ public class P1Controller : MonoBehaviour
 
     private void UpdateMovement()
     {
-        _rb.linearVelocity = new Vector3(moveInput.x * _moveSpeed * Time.fixedDeltaTime, 0, 0);
+        _rb.linearVelocity = new Vector3(_moveInput.x * _moveSpeed * Time.fixedDeltaTime, 0, 0);
     }
 
     //when joystick is moved update value
     public void OnMove(InputValue value)
     {
-        moveInput = value.Get<Vector2>();
+        _moveInput = value.Get<Vector2>();
+    }
+    public void OnRotate(InputValue value)
+    {
+        _rotateInput = value.Get<Vector2>();
+    }
+    public void OnPrimary(InputValue value)
+    {
+        _primaryInput = value.Get<float>() > 0.5f;
     }
 }
