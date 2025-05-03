@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +9,7 @@ public class P2Controller : MonoBehaviour
     private Rigidbody _rb;
     private Camera _Camera;
     [SerializeField] private GameObject _boulderPrefab;
+    private List<GameObject> _boulderList;
     private RectTransform _primaryChargeUI;
 
     //stats vars
@@ -15,7 +18,7 @@ public class P2Controller : MonoBehaviour
     private readonly float _maxRotation = 50f;
     private readonly float _primaryMaxThrowForce = 30f;
     private readonly float _primaryThrowTime = 3f; //time it takes to reach max throwing force in seconds
-
+    private readonly float _despawnYLevel = -2;
     //script vars
     private Vector2 moveInput;
     private Vector2 _rotateInput;
@@ -25,7 +28,9 @@ public class P2Controller : MonoBehaviour
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+    _boulderList = new List<GameObject>();
+
+    _rb = GetComponent<Rigidbody>();
         _primaryChargeUI = GameObject.Find("PrimaryForceCharge").GetComponent<RectTransform>();
     }
 
@@ -37,6 +42,7 @@ public class P2Controller : MonoBehaviour
         UpdatePrimary();
 
         UpdateUI();
+        CleanUpBoulders();
     }
 
     private void UpdateMovement()
@@ -71,8 +77,8 @@ public class P2Controller : MonoBehaviour
             _currentThrowingBoulder = Instantiate(_boulderPrefab, boulderPos, Quaternion.identity);
         else
             _currentThrowingBoulder.transform.position = boulderPos;
+        _boulderList.Add(_currentThrowingBoulder);
         _currentThrowingBoulder.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;//stop boulder from accumilating falling speed
-
         //charge throw force
         _primaryThrowForce += _primaryMaxThrowForce * (Time.fixedDeltaTime / _primaryThrowTime);
         //clamp throwforce
@@ -85,6 +91,17 @@ public class P2Controller : MonoBehaviour
         //temp magic value (height/2 so it starts at bottom)
         _primaryChargeUI.anchoredPosition = new Vector3(0, 23.75f * (_primaryThrowForce / _primaryMaxThrowForce) - 23.75f, 0);
         _primaryChargeUI.sizeDelta = new Vector2(_primaryChargeUI.sizeDelta.x, 47.5f * (_primaryThrowForce / _primaryMaxThrowForce));
+    }
+    private void CleanUpBoulders()
+    {
+        for(int i = _boulderList.Count -1; i >= 0;i--)
+        {
+            if (_boulderList[i].transform.position.y < _despawnYLevel)
+            {
+                Destroy(_boulderList[i]);
+                _boulderList.RemoveAt(i);
+            }
+        }
     }
 
     //when gamepad changes a value save that new value
