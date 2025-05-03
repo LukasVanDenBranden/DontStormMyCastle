@@ -28,7 +28,7 @@ public class P1Controller : MonoBehaviour
 
     private void UpdateMovement()
     {
-        _rb.linearVelocity = new Vector3(_moveInput.x * _moveSpeed * Time.fixedDeltaTime, 0, 0);
+        _rb.linearVelocity = new Vector3(_moveInput.x, 0, _moveInput.y) * _moveSpeed * Time.fixedDeltaTime;
     }
 
     //when joystick is moved update value
