@@ -19,6 +19,8 @@ public class P2Controller : MonoBehaviour
     private readonly float _primaryMaxThrowForce = 30f;
     private readonly float _primaryThrowTime = 3f; //time it takes to reach max throwing force in seconds
     private readonly float _despawnYLevel = -2;
+    private float _boulderCooldown = 0.75f;
+    private float _boulderCooldownTimer;
     //script vars
     private Vector2 moveInput;
     private Vector2 _rotateInput;
@@ -28,9 +30,9 @@ public class P2Controller : MonoBehaviour
 
     private void Awake()
     {
-    _boulderList = new List<GameObject>();
-
-    _rb = GetComponent<Rigidbody>();
+        _boulderList = new List<GameObject>();
+        _boulderCooldownTimer = _boulderCooldown;
+        _rb = GetComponent<Rigidbody>();
         _primaryChargeUI = GameObject.Find("PrimaryForceCharge").GetComponent<RectTransform>();
     }
 
@@ -56,8 +58,11 @@ public class P2Controller : MonoBehaviour
     }
     private void UpdatePrimary()
     {
+        _boulderCooldownTimer -= Time.deltaTime;
+        if (_boulderCooldownTimer >= 0) return;
+
         if (!_primaryInput)
-        { 
+        {
             //was throwing and now released, thus throw the boulder
             if (_currentThrowingBoulder != null)
             {
@@ -65,12 +70,13 @@ public class P2Controller : MonoBehaviour
                 //reset for next boulder
                 _currentThrowingBoulder = null;
                 _primaryThrowForce = 0f;
+                _boulderCooldownTimer = _boulderCooldown;
             }
             return;
         }
 
         //in front of player with the magic number being the distance from player
-        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f; 
+        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
 
         //if no boulder (first loop when button is pressed) spawn boulder, otherwise update its position
         if (_currentThrowingBoulder == null)
@@ -82,7 +88,7 @@ public class P2Controller : MonoBehaviour
         //charge throw force
         _primaryThrowForce += _primaryMaxThrowForce * (Time.fixedDeltaTime / _primaryThrowTime);
         //clamp throwforce
-        if(_primaryThrowForce > _primaryMaxThrowForce)
+        if (_primaryThrowForce > _primaryMaxThrowForce)
             _primaryThrowForce = _primaryMaxThrowForce;
     }
 
@@ -94,7 +100,7 @@ public class P2Controller : MonoBehaviour
     }
     private void CleanUpBoulders()
     {
-        for(int i = _boulderList.Count -1; i >= 0;i--)
+        for (int i = _boulderList.Count - 1; i >= 0; i--)
         {
             if (_boulderList[i].transform.position.y < _despawnYLevel)
             {
