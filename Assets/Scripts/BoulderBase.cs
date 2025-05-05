@@ -9,5 +9,9 @@ public class BoulderBase : MonoBehaviour
         {
             Debug.Log("hit");
         }
+        else if(collision.gameObject.tag == "Pickup")
+        {
+            collision.gameObject.GetComponent<Pickup>().PlayerAttempsPickup(false);
+        }
     }
 }

@@ -19,8 +19,8 @@ public class P2Controller : MonoBehaviour
     private readonly float _maxRotation = 50f;
     private readonly float _primaryMaxThrowForce = 30f;
     private readonly float _primaryThrowTime = 3f; //time it takes to reach max throwing force in seconds
-    private readonly float _despawnYLevel = -10f;
-    private readonly float _boulderCooldown = 0.75f;
+    private readonly float _boulderDespawnYLevel = -10f;
+    private readonly float _boulderCooldown = 0.75f; //cooldown until next boulder can be charged
     private readonly float _cameraDollyZoomStrength = 5f;
     //script vars
     private Vector2 moveInput;
@@ -28,6 +28,7 @@ public class P2Controller : MonoBehaviour
     private bool _primaryInput = false;
     private float _primaryThrowForce = 0f;
     private GameObject _currentThrowingBoulder;
+    private int _nextBoulderIndex = 0; //index of prefab list
     private float _boulderCooldownTimer;
     private float _cameraDefaultDistance;
     private float _cameraDefaultFOV;
@@ -97,8 +98,8 @@ public class P2Controller : MonoBehaviour
         //if no boulder (first loop when button is pressed) spawn boulder, otherwise update its position
         if (_currentThrowingBoulder == null)
         {
-            int randomIndex = UnityEngine.Random.Range(0,_boulderPrefabList.Count);
-            _currentThrowingBoulder = Instantiate(_boulderPrefabList[randomIndex], boulderPos, Quaternion.identity);
+            _currentThrowingBoulder = Instantiate(_boulderPrefabList[_nextBoulderIndex], boulderPos, Quaternion.identity); //spawn boulder
+            _nextBoulderIndex = 0; //reset so next boulder is just a normal boulder (unless changed)
         }
         else
             _currentThrowingBoulder.transform.position = boulderPos;
@@ -136,7 +137,7 @@ public class P2Controller : MonoBehaviour
                 _boulderList.RemoveAt(i);
                 continue;
             }
-            if (_boulderList[i].transform.position.y < _despawnYLevel)
+            if (_boulderList[i].transform.position.y < _boulderDespawnYLevel)
             {
                 Destroy(_boulderList[i]);
                 _boulderList.RemoveAt(i);
@@ -157,5 +158,10 @@ public class P2Controller : MonoBehaviour
     {
         //OnPrimary would only be called when pressed down, not when released, thus we need to check it in update
         _primaryInput = GetComponent<PlayerInput>().actions["Primary"].IsPressed();
+    }
+
+    public void SpawnSpecialBoulded(int boulderIndex)
+    {
+        _nextBoulderIndex = boulderIndex;
     }
 }

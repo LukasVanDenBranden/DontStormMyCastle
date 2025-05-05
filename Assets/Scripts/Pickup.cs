@@ -9,14 +9,18 @@ public class Pickup : MonoBehaviour
     private readonly float _attractionForce = 300f;
     private readonly float _pickupDistance = 7.5f;
 
+    [SerializeField] int _powerupIndex;
+
+    private void Awake()
+    {
+        if (_isTargetP1)
+            _targetTransform = FindFirstObjectByType<P1Controller>().transform;
+        else
+            _targetTransform = FindFirstObjectByType<P2Controller>().transform;
+    }
+
     private void FixedUpdate()
     {
-        if (_targetTransform == null)
-        {
-            FindTarget();
-            return;
-        }
-
         //pullForce = distance * -1 clamped [0, pickupdistance] then * _attractionForce
         float pullForce = Mathf.Clamp01((_pickupDistance - Vector3.Distance(_targetTransform.position, transform.position)) / _pickupDistance) * _attractionForce;
         Vector3 pullDirection = (_targetTransform.position - transform.position).normalized;
@@ -27,11 +31,18 @@ public class Pickup : MonoBehaviour
             Destroy(this.gameObject);
     }
 
-    private void FindTarget()
+
+    public void PlayerAttempsPickup(bool isP1)
     {
-        if (_isTargetP1)
-            _targetTransform = FindFirstObjectByType<P1Controller>().transform;
-        else
-            _targetTransform = FindFirstObjectByType<P2Controller>().transform;
+        if(isP1 == true && _isTargetP1 == true)
+        {
+            _targetTransform.gameObject.GetComponent<P1Controller>();
+            Destroy(this.gameObject);
+        }
+        else if(isP1 == false && _isTargetP1 == false)
+        {
+            _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulded(_powerupIndex);
+            Destroy(this.gameObject);
+        }
     }
 }

@@ -570,6 +570,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79de96edf3c4bb4fb4e8bee3bae6481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pickupPrefabsP1: []
+  _pickupPrefabsP2:
+  - {fileID: 0}
 --- !u!4 &372451936
 Transform:
   m_ObjectHideFlags: 0

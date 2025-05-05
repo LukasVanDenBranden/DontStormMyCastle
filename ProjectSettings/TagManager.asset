@@ -6,6 +6,7 @@ TagManager:
   tags:
   - RunningCamera
   - AttackingCamera
+  - Pickup
   layers:
   - Default
   - TransparentFX
