@@ -48,7 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a90243118ad84f4e8fcefc054f02000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boulderPrefab: {fileID: 502652657922175749, guid: e71fa27dde09e7e4a93bdeda8de06ec5, type: 3}
+  _boulderPrefabList:
+  - {fileID: 502652657922175749, guid: e71fa27dde09e7e4a93bdeda8de06ec5, type: 3}
+  - {fileID: 502652657922175749, guid: f9aca8ea509cd384282f338a0c0d7447, type: 3}
 --- !u!54 &8679411339773428704
 Rigidbody:
   m_ObjectHideFlags: 0

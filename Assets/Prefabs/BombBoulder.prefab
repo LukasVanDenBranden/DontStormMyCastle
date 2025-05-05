@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6838582879852749545}
   - component: {fileID: 7312365458737068230}
   - component: {fileID: -8088492939066034361}
-  - component: {fileID: -8074999294040574698}
+  - component: {fileID: 683004977775273652}
   m_Layer: 0
-  m_Name: Boulder
+  m_Name: BombBoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b400c21143f24b54e976d80b1f02aeb4, type: 2}
+  - {fileID: 2100000, guid: 2958634022e6ac14dae16dd70c7986a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -137,7 +137,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-8074999294040574698
+--- !u!114 &683004977775273652
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,6 +146,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 502652657922175749}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6c9e47b9e86d9f42897a79025b55997, type: 3}
+  m_Script: {fileID: 11500000, guid: b88dee41ec2e2af4795054be26fd0869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _explosion: {fileID: 4786563342218813998, guid: dc9d13b20c652cf429df9ede3615a6dc, type: 3}

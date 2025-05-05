@@ -1,6 +1,6 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +10,7 @@ public class P2Controller : MonoBehaviour
     private Rigidbody _rb;
     private Camera _camera;
     private RectTransform _primaryChargeUI;
-    [SerializeField] private GameObject _boulderPrefab;
+    [SerializeField] private List<GameObject> _boulderPrefabList;
     private List<GameObject> _boulderList;
 
     //stats vars
@@ -96,7 +96,10 @@ public class P2Controller : MonoBehaviour
 
         //if no boulder (first loop when button is pressed) spawn boulder, otherwise update its position
         if (_currentThrowingBoulder == null)
-            _currentThrowingBoulder = Instantiate(_boulderPrefab, boulderPos, Quaternion.identity);
+        {
+            int randomIndex = UnityEngine.Random.Range(0,_boulderPrefabList.Count);
+            _currentThrowingBoulder = Instantiate(_boulderPrefabList[randomIndex], boulderPos, Quaternion.identity);
+        }
         else
             _currentThrowingBoulder.transform.position = boulderPos;
         _boulderList.Add(_currentThrowingBoulder);
@@ -128,6 +131,11 @@ public class P2Controller : MonoBehaviour
     {
         for (int i = _boulderList.Count - 1; i >= 0; i--)
         {
+            if (_boulderList[i] == null)
+            {
+                _boulderList.RemoveAt(i);
+                continue;
+            }
             if (_boulderList[i].transform.position.y < _despawnYLevel)
             {
                 Destroy(_boulderList[i]);
