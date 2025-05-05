@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,10 +8,10 @@ public class P2Controller : MonoBehaviour
 {
     //outside connections
     private Rigidbody _rb;
-    private Camera _Camera;
+    private Camera _camera;
+    private RectTransform _primaryChargeUI;
     [SerializeField] private GameObject _boulderPrefab;
     private List<GameObject> _boulderList;
-    private RectTransform _primaryChargeUI;
 
     //stats vars
     private readonly float _moveSpeed = 1000f;
@@ -18,22 +19,33 @@ public class P2Controller : MonoBehaviour
     private readonly float _maxRotation = 50f;
     private readonly float _primaryMaxThrowForce = 30f;
     private readonly float _primaryThrowTime = 3f; //time it takes to reach max throwing force in seconds
-    private readonly float _despawnYLevel = -2;
-    private float _boulderCooldown = 0.75f;
-    private float _boulderCooldownTimer;
+    private readonly float _despawnYLevel = -10f;
+    private readonly float _boulderCooldown = 0.75f;
+    private readonly float _cameraDollyZoomStrength = 5f;
     //script vars
     private Vector2 moveInput;
     private Vector2 _rotateInput;
     private bool _primaryInput = false;
     private float _primaryThrowForce = 0f;
     private GameObject _currentThrowingBoulder;
+    private float _boulderCooldownTimer;
+    private float _cameraDefaultDistance;
+    private float _cameraDefaultFOV;
+    private float _chargePercentage = 0f; //[0, 1] to how much is charged AND goes slowely down using cooldown
 
     private void Awake()
     {
-        _boulderList = new List<GameObject>();
-        _boulderCooldownTimer = _boulderCooldown;
         _rb = GetComponent<Rigidbody>();
+        _camera = GetComponentInChildren<Camera>();
         _primaryChargeUI = GameObject.Find("PrimaryForceCharge").GetComponent<RectTransform>();
+        _boulderList = new List<GameObject>();
+    }
+
+    private void Start()
+    {
+        _boulderCooldownTimer = _boulderCooldown;
+        _cameraDefaultDistance = _camera.transform.localPosition.z;
+        _cameraDefaultFOV = _camera.fieldOfView;
     }
 
     private void FixedUpdate()
@@ -43,6 +55,10 @@ public class P2Controller : MonoBehaviour
         UpdateMovement();
         UpdatePrimary();
 
+        //update percentage
+        _chargePercentage = Mathf.MoveTowards(_chargePercentage, _primaryThrowForce / _primaryMaxThrowForce, 10 * Time.fixedDeltaTime);
+
+        UpdateCamera();
         UpdateUI();
         CleanUpBoulders();
     }
@@ -92,11 +108,21 @@ public class P2Controller : MonoBehaviour
             _primaryThrowForce = _primaryMaxThrowForce;
     }
 
+    private void UpdateCamera()
+    {
+        //get new distance and FOV
+        float newDistance = _cameraDefaultDistance + _cameraDollyZoomStrength * _chargePercentage;
+        float newFOV = _cameraDefaultFOV + _cameraDollyZoomStrength * _chargePercentage;
+
+        //apply
+        _camera.transform.localPosition = new Vector3(_camera.transform.localPosition.x, _camera.transform.localPosition.y, newDistance);
+        _camera.fieldOfView = Mathf.Clamp(newFOV, 1f, 179f);
+    }
     private void UpdateUI()
     {
         //temp magic value (height/2 so it starts at bottom)
-        _primaryChargeUI.anchoredPosition = new Vector3(0, 23.75f * (_primaryThrowForce / _primaryMaxThrowForce) - 23.75f, 0);
-        _primaryChargeUI.sizeDelta = new Vector2(_primaryChargeUI.sizeDelta.x, 47.5f * (_primaryThrowForce / _primaryMaxThrowForce));
+        _primaryChargeUI.anchoredPosition = new Vector3(0, 23.75f * _chargePercentage - 23.75f, 0);
+        _primaryChargeUI.sizeDelta = new Vector2(_primaryChargeUI.sizeDelta.x, 47.5f * _chargePercentage);
     }
     private void CleanUpBoulders()
     {
