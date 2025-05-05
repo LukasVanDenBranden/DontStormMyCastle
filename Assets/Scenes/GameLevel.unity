@@ -572,7 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pickupPrefabsP1: []
   _pickupPrefabsP2:
-  - {fileID: 0}
+  - {fileID: 125385296376157721, guid: 58ff241c0b8a18a47a5dbb0fef9c2088, type: 3}
 --- !u!4 &372451936
 Transform:
   m_ObjectHideFlags: 0

@@ -10,8 +10,24 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         var gamepads = Gamepad.all; //get all controllers
-        //players need to spawn this way cuz of the connection to their respective controllers
-        PlayerInput.Instantiate(_p1Prefab, playerIndex: 0, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[0]);
-        PlayerInput.Instantiate(_p2Prefab, playerIndex: 1, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[1]);
+        var keyboard = Keyboard.current; //get keyboard
+
+        //players need to spawn this way cuz of the connection to their respective controller
+        if (gamepads.Count >= 2)
+        {
+            // Two gamepads connected
+            PlayerInput.Instantiate(_p1Prefab, playerIndex: 0, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[0]);
+            PlayerInput.Instantiate(_p2Prefab, playerIndex: 1, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[1]);
+        }
+        else if (gamepads.Count == 1 && keyboard != null)
+        {
+            // One gamepad and keyboard connected
+            PlayerInput.Instantiate(_p1Prefab, playerIndex: 0, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: keyboard);
+            PlayerInput.Instantiate(_p2Prefab, playerIndex: 1, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[0]);
+        }
+        else
+        {
+            Debug.LogError("Not enough input devices connected. (add controller)");
+        }
     }
 }
