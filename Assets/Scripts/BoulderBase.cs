@@ -8,6 +8,10 @@ public class BoulderBase : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("hit");
+            P1Health.HeartsRemaining -= 1;
+            Debug.Log(P1Health.HeartsRemaining);
+
+            Destroy(gameObject);
         }
         else if(collision.gameObject.tag == "Pickup")
         {
