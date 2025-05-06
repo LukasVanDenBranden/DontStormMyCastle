@@ -7,6 +7,7 @@ TagManager:
   - RunningCamera
   - AttackingCamera
   - Pickup
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - Water
   - UI
   - Boulder
-  - 
+  - Floor
   - 
   - 
   - 
