@@ -14,6 +14,7 @@ public class P2Controller : MonoBehaviour
     private RectTransform _primaryChargeUI;
     private RectTransform _trowDirectionUI;
     [SerializeField] private List<GameObject> _boulderPrefabList;
+    [SerializeField] private Transform _aimingCirclePrefb;
     private List<GameObject> _boulderList;
 
     //stats vars
@@ -38,9 +39,10 @@ public class P2Controller : MonoBehaviour
     private float _cameraDefaultDistance;
     private float _cameraDefaultFOV;
     private float _chargePercentage = 0f; //[0, 1] to how much is charged AND goes slowely down using cooldown
-
+    private Transform _aimingCircle;
     private void Awake()
     {
+        _aimingCircle = Instantiate(_aimingCirclePrefb);
         _rb = GetComponent<Rigidbody>();
         _camera = GetComponentInChildren<Camera>();
         _primaryChargeUI = GameObject.Find("PrimaryForceCharge").GetComponent<RectTransform>();
@@ -81,31 +83,29 @@ public class P2Controller : MonoBehaviour
     {
         //add forces by input
         _rb.linearVelocity = new Vector3(-moveInput.x * _moveSpeed * Time.fixedDeltaTime, 0, 0);
-
-        //_rb.angularVelocity = new Vector3(0, _rotateInput.x * _rotationSpeed * Time.fixedDeltaTime, 0); commented out since right stick now changes trow direction instead of camera 
-
-        //apply max rotation angle
-        //float yRotation = Mathf.Clamp(transform.eulerAngles.y, 180 - _maxRotation, 180 + _maxRotation);
-
-        //transform.rotation = Quaternion.Euler(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);   commented out since right stick now changes trow direction instead of camera movement
     }
     private void UpdatePrimary()
     {
         _boulderCooldownTimer -= Time.deltaTime;
         if (_boulderCooldownTimer >= 0) return;
 
+        Vector3 forward = transform.forward;
+        Vector3 right = transform.right;
+        Vector3 trowDriection = forward * _rotateInput.y + right * _rotateInput.x;  //trow the boulder in the direction where the right stick is pointed
+        if (_rotateInput == Vector2.zero)
+        {
+            trowDriection = transform.forward; //default to forward if no input is given
+        }
+        //in front of player with the magic number being the distance from player
+        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
+        _aimingCircle.position = PredictLandingPoint(boulderPos, trowDriection * _primaryThrowForce, 0);
+
+
         if (!_primaryInput)
         {
             //was throwing and now released, thus throw the boulder
             if (_currentThrowingBoulder != null)
             {
-                Vector3 forward = transform.forward;
-                Vector3 right = transform.right;
-                Vector3 trowDriection = forward * _rotateInput.y + right * _rotateInput.x;  //trow the boulder in the direction where the right stick is pointed
-                if (_rotateInput == Vector2.zero)
-                {
-                    trowDriection = transform.forward; //default to forward if no input is given
-                }
                 _currentThrowingBoulder.GetComponent<Rigidbody>().AddForce(trowDriection * _primaryThrowForce, ForceMode.Impulse); //add force with same direction player is looking
                 //reset for next boulder
                 _currentThrowingBoulder = null;
@@ -115,8 +115,6 @@ public class P2Controller : MonoBehaviour
             return;
         }
 
-        //in front of player with the magic number being the distance from player
-        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
 
         //if no boulder (first loop when button is pressed) spawn boulder, otherwise update its position
         if (_currentThrowingBoulder == null)
@@ -167,7 +165,29 @@ public class P2Controller : MonoBehaviour
             }
         }
     }
+    public Vector3 PredictLandingPoint(Vector3 initialPosition, Vector3 initialVelocity, float targetY)
+    {
+        float a = 0.5f * Physics.gravity.y;
+        float b = initialVelocity.y;
+        float c = initialPosition.y - targetY;
 
+        float discriminant = b * b - 4 * a * c;
+
+        if (discriminant < 0)
+            return Vector3.zero; // will never hit the plane
+
+        float t1 = (-b + Mathf.Sqrt(discriminant)) / (2 * a);
+        float t2 = (-b - Mathf.Sqrt(discriminant)) / (2 * a);
+        float tImpact = Mathf.Max(t1, t2);
+
+        if (tImpact < 0)
+            return Vector3.zero; // negative time — invalid
+
+        Vector3 horizontalVelocity = new Vector3(initialVelocity.x, 0, initialVelocity.z);
+        Vector3 landingPosition = initialPosition + horizontalVelocity * tImpact;
+
+        return landingPosition;
+    }
     //when gamepad changes a value save that new value
     public void OnMove(InputValue value)
     {

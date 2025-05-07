@@ -35,7 +35,6 @@ public class P1Controller : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(_isGrounded);
         CheckIfGrounded();
         HandleSprint();
         ApplyGravety();
