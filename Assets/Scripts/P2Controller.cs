@@ -72,12 +72,18 @@ public class P2Controller : MonoBehaviour
     }
     private void Update()
     {
-        float angleUI = Mathf.Atan2(_rotateInput.y, _rotateInput.x) * Mathf.Rad2Deg; //calculate the z rotation of ui pivot based on the vector2 input
+        Vector2 input = _rotateInput.normalized;
+        float angleUI = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg; //calculate the z rotation of ui pivot based on the vector2 input
         if (_rotateInput == Vector2.zero)
         {
             angleUI = 90; //default to forward if there is no input
         }
         _trowDirectionUI.rotation = Quaternion.Euler(0, 0, angleUI);
+
+        Vector3 trowDriection = GetInPutDirection();
+        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
+
+        _aimingCircle.position = PredictLandingPoint(boulderPos, trowDriection * _primaryThrowForce, 0);
     }
     private void UpdateMovement()
     {
@@ -89,16 +95,7 @@ public class P2Controller : MonoBehaviour
         _boulderCooldownTimer -= Time.deltaTime;
         if (_boulderCooldownTimer >= 0) return;
 
-        Vector3 forward = transform.forward;
-        Vector3 right = transform.right;
-        Vector3 trowDriection = forward * _rotateInput.y + right * _rotateInput.x;  //trow the boulder in the direction where the right stick is pointed
-        if (_rotateInput == Vector2.zero)
-        {
-            trowDriection = transform.forward; //default to forward if no input is given
-        }
-        //in front of player with the magic number being the distance from player
-        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
-        _aimingCircle.position = PredictLandingPoint(boulderPos, trowDriection * _primaryThrowForce, 0);
+        Vector3 trowDriection = GetInPutDirection();
 
 
         if (!_primaryInput)
@@ -115,6 +112,8 @@ public class P2Controller : MonoBehaviour
             return;
         }
 
+        //in front of player with the magic number being the distance from player
+        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
 
         //if no boulder (first loop when button is pressed) spawn boulder, otherwise update its position
         if (_currentThrowingBoulder == null)
@@ -131,6 +130,20 @@ public class P2Controller : MonoBehaviour
         //clamp throwforce
         if (_primaryThrowForce > _primaryMaxThrowForce)
             _primaryThrowForce = _primaryMaxThrowForce;
+    }
+
+    private Vector3 GetInPutDirection()
+    {
+        Vector2 input = _rotateInput.normalized;
+        Vector3 forward = transform.forward;
+        Vector3 right = transform.right;
+        Vector3 trowDriection = forward * input.y + right * input.x;  //trow the boulder in the direction where the right stick is pointed
+        if (_rotateInput == Vector2.zero)
+        {
+            trowDriection = transform.forward; //default to forward if no input is given
+        }
+
+        return trowDriection;
     }
 
     private void UpdateCamera()
@@ -185,7 +198,7 @@ public class P2Controller : MonoBehaviour
 
         Vector3 horizontalVelocity = new Vector3(initialVelocity.x, 0, initialVelocity.z);
         Vector3 landingPosition = initialPosition + horizontalVelocity * tImpact;
-
+        landingPosition.y = targetY;
         return landingPosition;
     }
     //when gamepad changes a value save that new value
