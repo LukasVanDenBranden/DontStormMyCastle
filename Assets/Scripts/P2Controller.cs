@@ -3,13 +3,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class P2Controller : MonoBehaviour
 {
+
     //outside connections
     private Rigidbody _rb;
     private Camera _camera;
     private RectTransform _primaryChargeUI;
+    private RectTransform _trowDirectionUI;
     [SerializeField] private List<GameObject> _boulderPrefabList;
     private List<GameObject> _boulderList;
 
@@ -22,6 +25,8 @@ public class P2Controller : MonoBehaviour
     private readonly float _boulderDespawnYLevel = -10f;
     private readonly float _boulderCooldown = 0.75f; //cooldown until next boulder can be charged
     private readonly float _cameraDollyZoomStrength = 5f;
+    private readonly int _chargeSpeedMultiplier = 3;
+
     //script vars
     private Vector2 moveInput;
     private Vector2 _rotateInput;
@@ -39,6 +44,7 @@ public class P2Controller : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _camera = GetComponentInChildren<Camera>();
         _primaryChargeUI = GameObject.Find("PrimaryForceCharge").GetComponent<RectTransform>();
+        _trowDirectionUI = GameObject.Find("TrowDirectionRotationPivot").GetComponent<RectTransform>();
         _boulderList = new List<GameObject>();
     }
 
@@ -48,7 +54,6 @@ public class P2Controller : MonoBehaviour
         _cameraDefaultDistance = _camera.transform.localPosition.z;
         _cameraDefaultFOV = _camera.fieldOfView;
     }
-
     private void FixedUpdate()
     {
         UpdateButtonInputs();
@@ -63,15 +68,26 @@ public class P2Controller : MonoBehaviour
         UpdateUI();
         CleanUpBoulders();
     }
-
+    private void Update()
+    {
+        float angleUI = Mathf.Atan2(_rotateInput.y, _rotateInput.x) * Mathf.Rad2Deg; //calculate the z rotation of ui pivot based on the vector2 input
+        if (_rotateInput == Vector2.zero)
+        {
+            angleUI = 90; //default to forward if there is no input
+        }
+        _trowDirectionUI.rotation = Quaternion.Euler(0, 0, angleUI);
+    }
     private void UpdateMovement()
     {
         //add forces by input
         _rb.linearVelocity = new Vector3(-moveInput.x * _moveSpeed * Time.fixedDeltaTime, 0, 0);
-        _rb.angularVelocity = new Vector3(0, _rotateInput.x * _rotationSpeed * Time.fixedDeltaTime, 0);
+
+        //_rb.angularVelocity = new Vector3(0, _rotateInput.x * _rotationSpeed * Time.fixedDeltaTime, 0); commented out since right stick now changes trow direction instead of camera 
+
         //apply max rotation angle
-        float yRotation = Mathf.Clamp(transform.eulerAngles.y, 180 - _maxRotation, 180 + _maxRotation);
-        transform.rotation = Quaternion.Euler(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
+        //float yRotation = Mathf.Clamp(transform.eulerAngles.y, 180 - _maxRotation, 180 + _maxRotation);
+
+        //transform.rotation = Quaternion.Euler(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);   commented out since right stick now changes trow direction instead of camera movement
     }
     private void UpdatePrimary()
     {
@@ -83,7 +99,14 @@ public class P2Controller : MonoBehaviour
             //was throwing and now released, thus throw the boulder
             if (_currentThrowingBoulder != null)
             {
-                _currentThrowingBoulder.GetComponent<Rigidbody>().AddForce(transform.forward.normalized * _primaryThrowForce, ForceMode.Impulse); //add force with same direction player is looking
+                Vector3 forward = transform.forward;
+                Vector3 right = transform.right;
+                Vector3 trowDriection = forward * _rotateInput.y + right * _rotateInput.x;  //trow the boulder in the direction where the right stick is pointed
+                if (_rotateInput == Vector2.zero)
+                {
+                    trowDriection = transform.forward; //default to forward if no input is given
+                }
+                _currentThrowingBoulder.GetComponent<Rigidbody>().AddForce(trowDriection * _primaryThrowForce, ForceMode.Impulse); //add force with same direction player is looking
                 //reset for next boulder
                 _currentThrowingBoulder = null;
                 _primaryThrowForce = 0f;
@@ -106,7 +129,7 @@ public class P2Controller : MonoBehaviour
         _boulderList.Add(_currentThrowingBoulder);
         _currentThrowingBoulder.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;//stop boulder from accumilating falling speed
         //charge throw force
-        _primaryThrowForce += _primaryMaxThrowForce * (Time.fixedDeltaTime / _primaryThrowTime);
+        _primaryThrowForce += _primaryMaxThrowForce * (Time.fixedDeltaTime / _primaryThrowTime) * _chargeSpeedMultiplier;
         //clamp throwforce
         if (_primaryThrowForce > _primaryMaxThrowForce)
             _primaryThrowForce = _primaryMaxThrowForce;
