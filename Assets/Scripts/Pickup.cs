@@ -28,7 +28,7 @@ public class Pickup : MonoBehaviour
         GetComponent<Rigidbody>().AddForce(pullDirection * pullForce);
 
         if (Vector3.Distance(_targetTransform.position, transform.position) < 1)
-            Destroy(this.gameObject);
+            PlayerAttempsPickup(true);
     }
 
 

@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +15,9 @@ public class Locks : MonoBehaviour
     }
     private void P1Controller_OnPickUpKey(object sender, EventArgs empty)
     {
+        Debug.Log(index);
         if (index >= _lockImages.Count) return;
         _lockImages[index].enabled = false;
-        index--;
+        index++;
     }
 }

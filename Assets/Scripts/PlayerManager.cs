@@ -7,7 +7,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject _p1Prefab;
     [SerializeField] private GameObject _p2Prefab;
 
-    private void Start()
+    private void Awake()
     {
         var gamepads = Gamepad.all; //get all controllers
         var keyboard = Keyboard.current; //get keyboard
