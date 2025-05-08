@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 0;
 
         var gamepads = Gamepad.all; //get all controllers
         var keyboard = Keyboard.current; //get keyboard

@@ -23,12 +23,14 @@ public class GameStateScript : MonoBehaviour
         {
             if (uiScript._startButtonPressed == true)
             {
+                Time.timeScale = 1;
                 uiScript.OnGameStart();
                 CurrentState = GameState.Playing;
             }
         }
         else if (CurrentState == GameState.Playing) // while playing
         {
+
             if (P1Health.HeartsRemaining <= 0)
             {
                 Time.timeScale = 0;
