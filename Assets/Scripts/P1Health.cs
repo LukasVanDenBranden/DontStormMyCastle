@@ -3,6 +3,7 @@ using UnityEngine;
 public class P1Health : MonoBehaviour
 {
     [SerializeField] private int AmountOfHearts;
+    [SerializeField] private GameStateScript _gameStateScript;
     public static int HeartsRemaining;
     
     
@@ -18,7 +19,6 @@ public class P1Health : MonoBehaviour
         {
             Debug.Log("u ded");
             Time.timeScale = 0;
-
         }
     }
 }
