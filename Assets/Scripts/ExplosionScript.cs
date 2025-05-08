@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class ExplosionScript : MonoBehaviour
 {
+    [SerializeField] private AudioClip _explosion;
     private float _explosionDuration = 0.75f;
     private float _explosionTimer;
     private void Start()
     {
         _explosionTimer = _explosionDuration;
+        AudioSource.PlayClipAtPoint(_explosion, transform.position);
     }
     private void Update()
     {
