@@ -197,17 +197,6 @@
                 },
                 {
                     "name": "",
-                    "id": "027e1cb3-bd53-47d3-9163-00815af067a5",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Primary",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "7b2c3f0a-81f7-4404-a984-da7017a721a5",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
@@ -219,8 +208,30 @@
                 },
                 {
                     "name": "",
+                    "id": "10eb2954-148e-4433-a31a-0ba6256e928c",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "41112212-cdea-4c10-89eb-a8dd1ed6a3de",
                     "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4674a03f-200e-49b0-9c6f-041525cb84ab",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

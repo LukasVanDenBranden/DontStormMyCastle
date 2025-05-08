@@ -27,19 +27,19 @@ public class Pickup : MonoBehaviour
 
         GetComponent<Rigidbody>().AddForce(pullDirection * pullForce);
 
-        if(Vector3.Distance(_targetTransform.position, transform.position) < 1)
+        if (Vector3.Distance(_targetTransform.position, transform.position) < 1)
             Destroy(this.gameObject);
     }
 
 
     public void PlayerAttempsPickup(bool isP1)
     {
-        if(isP1 == true && _isTargetP1 == true)
+        if (isP1 == true && _isTargetP1 == true)
         {
-            _targetTransform.gameObject.GetComponent<P1Controller>();
+            _targetTransform.gameObject.GetComponent<P1Controller>().PickUpKey();
             Destroy(this.gameObject);
         }
-        else if(isP1 == false && _isTargetP1 == false)
+        else if (isP1 == false && _isTargetP1 == false)
         {
             _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulded(_powerupIndex);
             Destroy(this.gameObject);

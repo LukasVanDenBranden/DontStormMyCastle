@@ -16,6 +16,7 @@ public class P1Controller : MonoBehaviour
     private readonly float _sprintDUration = 0.15f;
     private readonly float _jumpVelocety = 20f;
     private readonly float _gravetyMultiplier = 3f;
+    public static P1Controller Instance;
 
 
     //script vars
@@ -26,10 +27,11 @@ public class P1Controller : MonoBehaviour
     private Vector2 _rotateInput;
     private bool _primaryInput = false;
     private bool _isGrounded = true;
-
+    public EventHandler OnPickUpKey;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        Instance = this;
         _moveSpeed = _walkSpeed;
     }
 
@@ -66,7 +68,10 @@ public class P1Controller : MonoBehaviour
             }
         }
     }
-
+    public void PickUpKey()
+    {
+        OnPickUpKey?.Invoke(this,EventArgs.Empty);
+    }
     private void ApplyGravety()
     {
         _rb.linearVelocity += Vector3.up * Physics.gravity.y * Time.fixedDeltaTime * _gravetyMultiplier; //gravery mulktiplier is there bc it felt to floaty
@@ -77,6 +82,8 @@ public class P1Controller : MonoBehaviour
         float xVelocety = _moveInput.x * _moveSpeed * Time.fixedDeltaTime;
         float zVelocety = _moveInput.y * _moveSpeed * Time.fixedDeltaTime;
         _rb.linearVelocity = new Vector3(xVelocety, _rb.linearVelocity.y, zVelocety);
+        float z = Mathf.Clamp(transform.position.z, -50, 40);
+        transform.position = new Vector3(transform.position.x, transform.position.y, z);
     }
 
     //when joystick is moved update value

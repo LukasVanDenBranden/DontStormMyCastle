@@ -27,7 +27,8 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Not enough input devices connected. (add controller)");
+            PlayerInput.Instantiate(_p1Prefab, playerIndex: 0, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: keyboard);
+            PlayerInput.Instantiate(_p2Prefab, playerIndex: 1, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: keyboard);
         }
     }
 }
