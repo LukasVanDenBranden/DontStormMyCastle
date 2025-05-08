@@ -4002,9 +4002,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 359a34ee9378d214c956b7d3968f36ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  images:
-  - {fileID: 1285505470}
+  _images:
   - {fileID: 1604109214}
+  - {fileID: 1285505470}
   _restartButton: {fileID: 403624474}
 --- !u!1 &1964749244
 GameObject:
