@@ -26,7 +26,7 @@ public class P2Controller : MonoBehaviour
     private readonly float _boulderDespawnYLevel = -10f;
     private readonly float _boulderCooldown = 0.75f; //cooldown until next boulder can be charged
     private readonly float _cameraDollyZoomStrength = 5f;
-    private readonly int _chargeSpeedMultiplier = 3;
+    private readonly int _chargeSpeedMultiplier = 2;
 
     //script vars
     private Vector2 moveInput;
@@ -40,6 +40,8 @@ public class P2Controller : MonoBehaviour
     private float _cameraDefaultFOV;
     private float _chargePercentage = 0f; //[0, 1] to how much is charged AND goes slowely down using cooldown
     private Transform _aimingCircle;
+    private Vector3 _lastTrowDirection;
+    private float _lastAngleUI;
     private void Awake()
     {
         _aimingCircle = Instantiate(_aimingCirclePrefb);
@@ -70,21 +72,6 @@ public class P2Controller : MonoBehaviour
         UpdateUI();
         CleanUpBoulders();
     }
-    private void Update()
-    {
-        Vector2 input = _rotateInput.normalized;
-        float angleUI = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg; //calculate the z rotation of ui pivot based on the vector2 input
-        if (_rotateInput == Vector2.zero)
-        {
-            angleUI = 90; //default to forward if there is no input
-        }
-        _trowDirectionUI.rotation = Quaternion.Euler(0, 0, angleUI);
-
-        Vector3 trowDriection = GetInPutDirection();
-        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
-
-        _aimingCircle.position = PredictLandingPoint(boulderPos, trowDriection * _primaryThrowForce, 0);
-    }
     private void UpdateMovement()
     {
         //add forces by input
@@ -103,6 +90,7 @@ public class P2Controller : MonoBehaviour
             //was throwing and now released, thus throw the boulder
             if (_currentThrowingBoulder != null)
             {
+                _currentThrowingBoulder.GetComponent<MeshRenderer>().enabled = true;
                 _currentThrowingBoulder.GetComponent<Rigidbody>().AddForce(trowDriection * _primaryThrowForce, ForceMode.Impulse); //add force with same direction player is looking
                 //reset for next boulder
                 _currentThrowingBoulder = null;
@@ -119,6 +107,7 @@ public class P2Controller : MonoBehaviour
         if (_currentThrowingBoulder == null)
         {
             _currentThrowingBoulder = Instantiate(_boulderPrefabList[_nextBoulderIndex], boulderPos, Quaternion.identity); //spawn boulder
+            _currentThrowingBoulder.GetComponent<MeshRenderer>().enabled = false;
             _nextBoulderIndex = 0; //reset so next boulder is just a normal boulder (unless changed)
         }
         else
@@ -134,16 +123,43 @@ public class P2Controller : MonoBehaviour
 
     private Vector3 GetInPutDirection()
     {
-        Vector2 input = _rotateInput.normalized;
+        //this is ugly as fuck, i know i'll fix it later. kwil gewoon voor study night zo veel mogelijk hebben
+        float angleUI;
+        if (_rotateInput == Vector2.zero)
+        {
+            angleUI = _lastAngleUI;
+        }
+        else
+        {
+            Vector2 rotationInpupt = _rotateInput.normalized;
+            angleUI = Mathf.Atan2(rotationInpupt.y, rotationInpupt.x); //calculate the z rotation of ui pivot based on the vector2 input
+            angleUI *= Mathf.Rad2Deg;
+            if (angleUI < -90)
+            {
+                angleUI = 180;
+            }
+        }
+        angleUI = Mathf.Clamp(angleUI, 0, 180);
+        Vector2 direction = new Vector2(Mathf.Cos(angleUI * Mathf.Deg2Rad), Mathf.Sin(angleUI * Mathf.Deg2Rad));
+        _lastAngleUI = angleUI;
+        _trowDirectionUI.rotation = Quaternion.Euler(0, 0, angleUI);
+
+        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
+
+        if (_rotateInput == Vector2.zero)
+        {
+            return _lastTrowDirection;
+        }
+        Vector2 input = direction.normalized;
         Vector3 forward = transform.forward;
         Vector3 right = transform.right;
         Vector3 trowDriection = forward * input.y + right * input.x;  //trow the boulder in the direction where the right stick is pointed
-        if (_rotateInput == Vector2.zero)
-        {
-            trowDriection = transform.forward; //default to forward if no input is given
-        }
 
+        _aimingCircle.position = PredictLandingPoint(boulderPos, trowDriection * _primaryThrowForce, 0);
+        _lastTrowDirection = trowDriection;
         return trowDriection;
+
+
     }
 
     private void UpdateCamera()
