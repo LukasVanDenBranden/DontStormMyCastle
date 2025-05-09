@@ -38,6 +38,7 @@ public class UiScript : MonoBehaviour
         _restartButton.gameObject.SetActive(false);
         _runnerwonGameOverScreen.gameObject.SetActive(false);
         _defenderwonGameOverScreen.gameObject.SetActive(false);
+        Locks.index = 0;
     }
 
     public void ActivateGameOverScreen()

@@ -7,7 +7,8 @@ public class GameStateScript : MonoBehaviour
 
     public GameObject Runner;
 
-    private bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
+    public static bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
+    public static bool _defenderwon;
     public enum GameState
     {
         TitelScreen,
@@ -37,7 +38,16 @@ public class GameStateScript : MonoBehaviour
 
             if (P1Health.HeartsRemaining <= 0 || Runner.transform.position.y <= -20)
             {
+                _defenderwon = true;
                 Time.timeScale = 0;
+                uiScript.ActivateGameOverScreen();
+                CurrentState = GameState.GameOver;
+            }
+
+            if (Runner.transform.position.z > 45 && Locks.index >= 3)
+            {
+                Time.timeScale = 0;
+                _runnerwon = true;
                 uiScript.ActivateGameOverScreen();
                 CurrentState = GameState.GameOver;
             }
@@ -51,4 +61,5 @@ public class GameStateScript : MonoBehaviour
             }
         }
     }
+
 }

@@ -8,6 +8,9 @@ public class EndScreen : MonoBehaviour
 {
     [SerializeField] private List<Image> _images;
     [SerializeField] private Button _restartButton;
+
+    private Vector3 _player1ImagePosition;
+    private Vector3 _player2ImagePosition;
     private void Start()
     {
         _restartButton.onClick.AddListener(OnClick);
@@ -16,18 +19,27 @@ public class EndScreen : MonoBehaviour
             img.gameObject.SetActive(false);
         }
         _restartButton.gameObject.SetActive(false);
+
+        _player1ImagePosition = _images[0].transform.position;
+        _player2ImagePosition = _images[1].transform.position;
     }
     void Update()
     {
-        if (P1Health.HeartsRemaining <= 0)
+        if (GameStateScript._runnerwon)
         {
-            foreach (Image img in _images)
-            {
-                img.gameObject.SetActive(true);
-            }
-            _restartButton.gameObject.SetActive(true);
+            _images[1].transform.position = _player1ImagePosition;
+            _images[0].transform.position = _player2ImagePosition;
+
+        }
+
+        if (GameStateScript._defenderwon)
+        {
+            _images[1].transform.position = _player1ImagePosition;
+            _images[0].transform.position = _player2ImagePosition;
         }
     }
+
+
     private void OnClick()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
