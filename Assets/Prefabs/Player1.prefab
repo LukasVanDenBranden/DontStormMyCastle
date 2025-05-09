@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AmountOfHearts: 3
+  _gameStateScript: {fileID: 0}
 --- !u!1 &4779162270147417058
 GameObject:
   m_ObjectHideFlags: 0

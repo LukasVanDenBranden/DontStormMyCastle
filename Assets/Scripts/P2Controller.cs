@@ -19,7 +19,6 @@ public class P2Controller : MonoBehaviour
 
     //stats vars
     private readonly float _moveSpeed = 1000f;
-    private readonly float _rotationSpeed = 50f;
     private readonly float _maxRotation = 50f;
     private readonly float _primaryMaxThrowForce = 30f;
     private readonly float _primaryThrowTime = 3f; //time it takes to reach max throwing force in seconds
@@ -42,6 +41,7 @@ public class P2Controller : MonoBehaviour
     private Transform _aimingCircle;
     private Vector3 _lastTrowDirection;
     private float _lastAngleUI;
+
     private void Awake()
     {
         _aimingCircle = Instantiate(_aimingCirclePrefb);

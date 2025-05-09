@@ -43,4 +43,9 @@ public class FloorManager : MonoBehaviour
                 tile.transform.position += new Vector3(0, 0, _trackLength); //reset tile to the back once needed
         }
     }
+
+    public float GetFloorSpeed()
+    {
+        return _floorSpeed;
+    }
 }

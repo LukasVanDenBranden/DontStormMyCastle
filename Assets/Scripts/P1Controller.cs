@@ -6,84 +6,86 @@ using UnityEngine.InputSystem;
 public class P1Controller : MonoBehaviour
 {
     //outside connections
+    public EventHandler OnPickUpKey;
+    public static P1Controller Instance;
     private Rigidbody _rb;
-    private Camera _Camera;
+    private Camera _camera;
+    private FloorManager _floorManager;
     [SerializeField] private LayerMask _floorMask;
 
     //stats vars
-    private readonly float _sprintSpeed = 3000f;
-    private readonly float _walkSpeed = 1000f;
-    private readonly float _sprintDUration = 0.15f;
-    private readonly float _jumpVelocety = 20f;
-    private readonly float _gravetyMultiplier = 3f;
-    public static P1Controller Instance;
-
+    private readonly float _walkSpeedSideways = 1000f;
+    private readonly float _walkSpeedForward = 700f;
+    private readonly float _dashTimeout = 5f; //time it takes to recharge dash
+    private readonly float _dashVelocity = 150f;
+    private readonly float _jumpVelocity = 40f;
+    private readonly float _gravityMultiplier = 100f;
 
     //script vars
-    private float _moveSpeed;
-    private float _sprintTimer;
-    private bool _isSprinting;
     private Vector2 _moveInput;
     private Vector2 _rotateInput;
     private bool _primaryInput = false;
-    private bool _isGrounded = true;
-    public EventHandler OnPickUpKey;
+    private float _timeSinceLastDash = 0f;
+    private Vector3 _currentDashVelocity = Vector3.zero;
+
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
         Instance = this;
-        _moveSpeed = _walkSpeed;
+        _rb = GetComponent<Rigidbody>();
+        _camera = GetComponentInChildren<Camera>();
+        _floorManager = FindFirstObjectByType<FloorManager>();
     }
 
     private void FixedUpdate()
     {
-        CheckIfGrounded();
-        HandleSprint();
-        ApplyGravety();
+        _timeSinceLastDash += Time.fixedDeltaTime;
+        UpdateButtonInputs();
         UpdateMovement();
     }
 
-    private void CheckIfGrounded()
-    {
-        float offset = 0.5f;
-        Vector3 position = transform.position;
-        position.y += offset; //add a offset so that the ray isnt cast in the ground itself
-        if (Physics.Raycast(position, Vector3.down, offset + 0.2f, _floorMask)) //check if the charachter is on the ground by shooting a raycast, +0.2f so that its more consistant
-        {
-            _isGrounded = true;
-            return;
-        }
-        _isGrounded = false;
-    }
-
-    private void HandleSprint()
-    {
-        if (_isSprinting)
-        {
-            _sprintTimer -= Time.deltaTime;
-            if (_sprintTimer <= 0)
-            {
-                _isSprinting = false;
-                _moveSpeed = _walkSpeed;
-            }
-        }
-    }
     public void PickUpKey()
     {
         OnPickUpKey?.Invoke(this,EventArgs.Empty);
     }
-    private void ApplyGravety()
-    {
-        _rb.linearVelocity += Vector3.up * Physics.gravity.y * Time.fixedDeltaTime * _gravetyMultiplier; //gravery mulktiplier is there bc it felt to floaty
-    }
 
     private void UpdateMovement()
     {
-        float xVelocety = _moveInput.x * _moveSpeed * Time.fixedDeltaTime;
-        float zVelocety = _moveInput.y * _moveSpeed * Time.fixedDeltaTime;
-        _rb.linearVelocity = new Vector3(xVelocety, _rb.linearVelocity.y, zVelocety);
-        float z = Mathf.Clamp(transform.position.z, -50, 40);
-        transform.position = new Vector3(transform.position.x, transform.position.y, z);
+        //get input force
+        Vector3 inputs = new Vector3(_moveInput.x * _walkSpeedSideways * Time.fixedDeltaTime, 0, _moveInput.y * _walkSpeedForward * Time.fixedDeltaTime);
+        //track
+        Vector3 track = new Vector3(0, 0, -_floorManager.GetFloorSpeed());
+        //get gravity
+        Vector3 gravity = Vector3.down * Time.fixedDeltaTime * _gravityMultiplier;
+
+        //if on ground
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.55f, _floorMask))
+        {
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
+            gravity = Vector3.zero;
+        }
+        //apply forces by input
+        _rb.linearVelocity = inputs + track + Vector3.up * _rb.linearVelocity.y + gravity + _currentDashVelocity;
+
+        //add drag
+        _currentDashVelocity /= 1.2f;
+    }
+    private void TryDash()
+    {
+        if (_timeSinceLastDash < _dashTimeout)
+            return;
+        //reset time
+        _timeSinceLastDash = 0;
+        //dash
+        _currentDashVelocity = Vector3.forward * _dashVelocity;
+    }
+    private void TryJump()
+    {
+        //if no ground found dont jump
+        if(!Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.55f, _floorMask))
+            return;
+
+        //found ground thus jump
+        _rb.AddForce(Vector3.up * _jumpVelocity, ForceMode.Impulse);
     }
 
     //when joystick is moved update value
@@ -99,15 +101,13 @@ public class P1Controller : MonoBehaviour
     {
         _primaryInput = value.Get<float>() > 0.5f;
     }
-    public void OnSprint(InputValue value)
+    private void UpdateButtonInputs()
     {
-        _isSprinting = true;
-        _moveSpeed = _sprintSpeed;
-        _sprintTimer = _sprintDUration;
-    }
-    public void OnJump(InputValue value)
-    {
-        if (!_isGrounded) return;
-        _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, _jumpVelocety, _rb.linearVelocity.z);
+        //OnPrimary would only be called when pressed down, not when released, thus we need to check it in update
+        _primaryInput = GetComponent<PlayerInput>().actions["Primary"].IsPressed();
+        if (GetComponent<PlayerInput>().actions["Dash"].IsPressed())
+            TryDash();
+        if(GetComponent<PlayerInput>().actions["Jump"].IsPressed())
+            TryJump();
     }
 }

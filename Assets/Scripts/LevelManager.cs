@@ -14,6 +14,8 @@ public class LevelManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //TODO: make a decent solution of where to place boulders
+
         tempPickupTimer -= Time.fixedDeltaTime;
 
         if(tempPickupTimer < 0 )
