@@ -14,12 +14,12 @@ public class P1Controller : MonoBehaviour
     [SerializeField] private LayerMask _floorMask;
 
     //stats vars
-    private readonly float _walkSpeedSideways = 1000f;
-    private readonly float _walkSpeedForward = 700f;
+    private readonly float _walkSpeedSideways = 500f;
+    private readonly float _walkSpeedForward = 500f;
     private readonly float _dashTimeout = 5f; //time it takes to recharge dash
-    private readonly float _dashVelocity = 150f;
+    private readonly float _dashVelocity = 100f;
     private readonly float _jumpVelocity = 40f;
-    private readonly float _gravityMultiplier = 100f;
+    private readonly float _gravityMultiplier = 120f;
 
     //script vars
     private Vector2 _moveInput;

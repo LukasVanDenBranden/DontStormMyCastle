@@ -923,7 +923,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 367498917}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 69a2ae4e1941ddb45a7b47aa8a41db2a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -982,6 +982,16 @@ MonoBehaviour:
   _pickupPrefabsP1: []
   _pickupPrefabsP2:
   - {fileID: 125385296376157721, guid: 58ff241c0b8a18a47a5dbb0fef9c2088, type: 3}
+  _obstaclePrefabs:
+  - {fileID: 7014438214332345154, guid: edba428c07e48474f9e8dae247b8b120, type: 3}
+  - {fileID: 3569514730305494252, guid: 5b645de3d995a4441bcc6c395b065b20, type: 3}
+  - {fileID: 6985135927572928683, guid: c4f22b60006824e4b9b0b3966b1d2657, type: 3}
+  - {fileID: 576571883394086813, guid: 9c747919beee0a74d86d96957edd36a4, type: 3}
+  - {fileID: 3089105264207930510, guid: 0646589c97eeaf443bd74106e1f7ebde, type: 3}
+  - {fileID: 3618055832051179746, guid: 3addfdb5a4551ba4e9b5f5315dab9b84, type: 3}
+  - {fileID: 662849226753079980, guid: 31d7f74da70eb144f9a1c89cb8db0729, type: 3}
+  - {fileID: 930026083976683566, guid: dcee7b48bc5325146bb5351da6f96e41, type: 3}
+  - {fileID: 3863313576614964610, guid: 2fd0466c4505fcc4e9ae4db07cf05d1c, type: 3}
 --- !u!4 &372451936
 Transform:
   m_ObjectHideFlags: 0
@@ -1601,7 +1611,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 655138176}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 69a2ae4e1941ddb45a7b47aa8a41db2a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
