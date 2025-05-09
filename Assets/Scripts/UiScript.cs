@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -7,11 +8,14 @@ using UnityEngine.UI;
 public class UiScript : MonoBehaviour
 {
     [SerializeField] Image startScreenImage;
-    [SerializeField] Image _runnerwonGameOverScreen;
-    [SerializeField] Image _defenderwonGameOverScreen;
+    [SerializeField] Texture2D _winImage; //Texture2D because position is variable
+    [SerializeField] Texture2D _lossImage;
     [SerializeField] Button _startButton;
     [SerializeField] Button _restartButton;
-    private Vector2 _screenDimensions;
+
+    [SerializeField] Rect _runnerWinLossRectangle;
+    [SerializeField] Rect _defenderWinLossRectangle;
+
     public bool _startButtonPressed;
     public bool _restartButtonPressed;
 
@@ -21,8 +25,6 @@ public class UiScript : MonoBehaviour
         _restartButtonPressed = false;
 
         _restartButton.gameObject.SetActive(false);
-        _runnerwonGameOverScreen.gameObject.SetActive(false);
-        _defenderwonGameOverScreen.gameObject.SetActive(false);
 
         _startButton.onClick.AddListener(OnStartButtonClick);
         _restartButton.onClick.AddListener(OnRestartButtonClick);
@@ -36,15 +38,11 @@ public class UiScript : MonoBehaviour
         _startButton.gameObject.SetActive(false);
 
         _restartButton.gameObject.SetActive(false);
-        _runnerwonGameOverScreen.gameObject.SetActive(false);
-        _defenderwonGameOverScreen.gameObject.SetActive(false);
     }
 
     public void ActivateGameOverScreen()
     {
         _restartButton.gameObject.SetActive(true);
-        _runnerwonGameOverScreen.gameObject.SetActive(true);
-        _defenderwonGameOverScreen.gameObject.SetActive(true);
     }
     
 
@@ -56,5 +54,17 @@ public class UiScript : MonoBehaviour
     public void OnRestartButtonClick()
     {
         _restartButtonPressed = true;
+    }
+
+    public void DrawWinAndLoss(bool didRunnerwin)
+    {
+        if (didRunnerwin)
+        {
+            GUI.DrawTexture(_runnerWinLossRectangle,_winImage);
+            GUI.DrawTexture(_defenderWinLossRectangle, _lossImage);
+            return;
+        }
+        GUI.DrawTexture(_runnerWinLossRectangle, _lossImage);
+        GUI.DrawTexture(_defenderWinLossRectangle, _winImage);
     }
 }

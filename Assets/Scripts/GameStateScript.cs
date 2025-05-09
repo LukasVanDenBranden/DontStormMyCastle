@@ -4,7 +4,7 @@ public class GameStateScript : MonoBehaviour
 {
     [SerializeField] UiScript uiScript;
 
-    private bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
+    private bool _runnerwon;
     public enum GameState
     {
         TitelScreen,
@@ -43,6 +43,14 @@ public class GameStateScript : MonoBehaviour
                 uiScript.OnGameStart();
                 CurrentState = GameState.Playing;
             }
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (CurrentState == GameState.GameOver)
+        {
+            uiScript.DrawWinAndLoss(_runnerwon);
         }
     }
 }
