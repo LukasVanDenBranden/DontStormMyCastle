@@ -55,7 +55,7 @@ public class P1Controller : MonoBehaviour
         //track
         Vector3 track = new Vector3(0, 0, -_floorManager.GetFloorSpeed());
         //get gravity
-        Vector3 gravity = Vector3.down * Time.fixedDeltaTime * _gravityMultiplier;
+        Vector3 gravity = _gravityMultiplier * Time.fixedDeltaTime * Vector3.down;
 
         //if on ground
         if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.55f, _floorMask))

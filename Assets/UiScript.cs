@@ -39,6 +39,7 @@ public class UiScript : MonoBehaviour
         _runnerwonGameOverScreen.gameObject.SetActive(false);
         _defenderwonGameOverScreen.gameObject.SetActive(false);
         Locks.index = 0;
+        GameStateScript._runnerwon = false;
     }
 
     public void ActivateGameOverScreen()

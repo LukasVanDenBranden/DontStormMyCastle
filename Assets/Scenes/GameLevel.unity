@@ -2430,6 +2430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiScript: {fileID: 1934437232}
+  Runner: {fileID: 0}
   CurrentState: 0
 --- !u!4 &1032112749 stripped
 Transform:
@@ -2528,7 +2529,7 @@ GameObject:
   - component: {fileID: 1117666715}
   m_Layer: 3
   m_Name: Castle
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4305,7 +4306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startScreenImage: {fileID: 2094591462}
   _runnerwonGameOverScreen: {fileID: 1285505470}
-  _defenderwonGameOverScreen: {fileID: 1285505470}
+  _defenderwonGameOverScreen: {fileID: 1604109214}
   _startButton: {fileID: 1570538690}
   _restartButton: {fileID: 403624474}
   _startButtonPressed: 0

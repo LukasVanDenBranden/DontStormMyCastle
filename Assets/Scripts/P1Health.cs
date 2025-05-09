@@ -7,19 +7,19 @@ public class P1Health : MonoBehaviour
     [SerializeField] private GameStateScript _gameStateScript;
     public static int HeartsRemaining;
 
-    private static Collider collider;
+    private static Collider collides;
     
     void Start()
     {
         HeartsRemaining = AmountOfHearts;
 
-        collider = GetComponent<Collider>();
+        collides = GetComponent<Collider>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (collider.gameObject.tag == "Finish")
+        if (collides.gameObject.CompareTag("Finish"))
         {
 
         }
@@ -27,7 +27,7 @@ public class P1Health : MonoBehaviour
 
     public static bool Player1ReachesFinish()
     {
-        if (collider.gameObject.tag == "Finish")
+        if (collides.gameObject.CompareTag("Finish"))
         {
             Debug.Log("yey");
             return true;
