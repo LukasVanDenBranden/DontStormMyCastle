@@ -1,8 +1,11 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameStateScript : MonoBehaviour
 {
     [SerializeField] UiScript uiScript;
+
+    public GameObject Runner;
 
     private bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
     public enum GameState
@@ -15,6 +18,7 @@ public class GameStateScript : MonoBehaviour
     void Start()
     {
         CurrentState = GameState.TitelScreen;
+            Runner = GameObject.FindWithTag("Player");
     }
 
     private void Update()
@@ -31,7 +35,7 @@ public class GameStateScript : MonoBehaviour
         else if (CurrentState == GameState.Playing) // while playing
         {
 
-            if (P1Health.HeartsRemaining <= 0)
+            if (P1Health.HeartsRemaining <= 0 || Runner.transform.position.y <= -20)
             {
                 Time.timeScale = 0;
                 uiScript.ActivateGameOverScreen();
