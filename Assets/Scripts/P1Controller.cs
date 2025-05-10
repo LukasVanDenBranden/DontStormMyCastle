@@ -19,7 +19,7 @@ public class P1Controller : MonoBehaviour
     private readonly float _walkSpeedForward = 300f; //speed difference with floor (if 0 player will go as fast as floor)
     private readonly float _dashTimeout = 5f; //time it takes to recharge dash
     private readonly float _dashVelocity = 100f;
-    private readonly float _jumpVelocity = 35f;
+    private readonly float _jumpVelocity = 30f;
     private readonly float _gravityMultiplier = 120f;
 
     //script vars
