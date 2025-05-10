@@ -6,6 +6,7 @@ public class ActualKeyScript : MonoBehaviour
     private FloorManager _floorManager;
     private float _keySpawnTimer;
     private P1Controller p1Controller;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
