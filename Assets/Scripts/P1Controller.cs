@@ -27,6 +27,7 @@ public class P1Controller : MonoBehaviour
     private bool _primaryInput = false;
     private float _timeSinceLastDash = 0f;
     private Vector3 _currentDashVelocity = Vector3.zero;
+    private float _moveSpeedMultiplier = 1;
 
     private void Awake()
     {
@@ -45,7 +46,7 @@ public class P1Controller : MonoBehaviour
 
     public void PickUpKey()
     {
-        OnPickUpKey?.Invoke(this,EventArgs.Empty);
+        OnPickUpKey?.Invoke(this, EventArgs.Empty);
     }
 
     private void UpdateMovement()
@@ -58,7 +59,7 @@ public class P1Controller : MonoBehaviour
         Vector3 gravity = _gravityMultiplier * Time.fixedDeltaTime * Vector3.down;
 
         //if moving forward but there is an obstacle in front, player move forward is turned off
-        if(Physics.Raycast(transform.position, Vector3.forward, 0.9f + Mathf.Max(0, _rb.linearVelocity.z/100), _obstacleMask) && inputs.z > 0) //added [0, _rb.linearVelocity.z/100], it does + vel.z/100 when its positive (faster = look more ahead)
+        if (Physics.Raycast(transform.position, Vector3.forward, 0.9f + Mathf.Max(0, _rb.linearVelocity.z / 100), _obstacleMask) && inputs.z > 0) //added [0, _rb.linearVelocity.z/100], it does + vel.z/100 when its positive (faster = look more ahead)
         {
             inputs = new Vector3(inputs.x, inputs.y, 0);
             _currentDashVelocity = new Vector3(_currentDashVelocity.x, _currentDashVelocity.y, 0);
@@ -88,7 +89,7 @@ public class P1Controller : MonoBehaviour
             _rb.MovePosition(new Vector3(_rb.position.x, hit.point.y + 0.05f, _rb.position.z));
         }
         //apply forces by input
-        _rb.linearVelocity = inputs + track + Vector3.up * _rb.linearVelocity.y + gravity + _currentDashVelocity;
+        _rb.linearVelocity = (inputs + Vector3.up * _rb.linearVelocity.y + gravity + _currentDashVelocity) * _moveSpeedMultiplier + track;
 
         //add drag
         _currentDashVelocity /= 1.2f;
@@ -106,7 +107,7 @@ public class P1Controller : MonoBehaviour
     {
 
         //if no ground found dont jump
-        if(!Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.55f, _floorMask))
+        if (!Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.55f, _floorMask))
             return;
 
         //found ground thus jump
@@ -122,13 +123,17 @@ public class P1Controller : MonoBehaviour
     {
         _primaryInput = value.Get<float>() > 0.5f;
     }
+    public void SetMoveSpeedMultiplier(float multiplier)
+    {
+        _moveSpeedMultiplier = multiplier;
+    }
     private void UpdateButtonInputs()
     {
         //OnPrimary would only be called when pressed down, not when released, thus we need to check it in update
         _primaryInput = GetComponent<PlayerInput>().actions["Primary"].IsPressed();
         if (GetComponent<PlayerInput>().actions["Dash"].IsPressed())
             TryDash();
-        if(GetComponent<PlayerInput>().actions["Jump"].IsPressed())
+        if (GetComponent<PlayerInput>().actions["Jump"].IsPressed())
             TryJump();
     }
 }
