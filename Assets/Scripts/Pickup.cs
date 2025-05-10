@@ -5,7 +5,7 @@ public class Pickup : MonoBehaviour
 {
     private Transform _targetTransform;
 
-    [SerializeField] bool _isTargetP1; //if true pickup is for p1, else p2
+    [SerializeField] bool _isForP1; //if true pickup is for p1, else p2
     private readonly float _attractionForce = 300f;
     private readonly float _pickupDistance = 7.5f;
 
@@ -13,7 +13,7 @@ public class Pickup : MonoBehaviour
 
     private void Awake()
     {
-        if (_isTargetP1)
+        if (_isForP1)
             _targetTransform = FindFirstObjectByType<P1Controller>().transform;
         else
             _targetTransform = FindFirstObjectByType<P2Controller>().transform;
@@ -34,12 +34,12 @@ public class Pickup : MonoBehaviour
 
     public void PlayerAttempsPickup(bool isP1)
     {
-        if (isP1 == true && _isTargetP1 == true)
+        if (isP1 == true && _isForP1 == true)
         {
             _targetTransform.gameObject.GetComponent<P1Controller>().PickUpKey();
             Destroy(this.gameObject);
         }
-        else if (isP1 == false && _isTargetP1 == false)
+        else if (isP1 == false && _isForP1 == false)
         {
             _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulded(_powerupIndex);
             Destroy(this.gameObject);

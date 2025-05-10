@@ -983,15 +983,16 @@ MonoBehaviour:
   _pickupPrefabsP2:
   - {fileID: 125385296376157721, guid: 58ff241c0b8a18a47a5dbb0fef9c2088, type: 3}
   _obstaclePrefabs:
-  - {fileID: 7014438214332345154, guid: edba428c07e48474f9e8dae247b8b120, type: 3}
-  - {fileID: 3569514730305494252, guid: 5b645de3d995a4441bcc6c395b065b20, type: 3}
-  - {fileID: 6985135927572928683, guid: c4f22b60006824e4b9b0b3966b1d2657, type: 3}
-  - {fileID: 576571883394086813, guid: 9c747919beee0a74d86d96957edd36a4, type: 3}
-  - {fileID: 3089105264207930510, guid: 0646589c97eeaf443bd74106e1f7ebde, type: 3}
-  - {fileID: 3618055832051179746, guid: 3addfdb5a4551ba4e9b5f5315dab9b84, type: 3}
-  - {fileID: 662849226753079980, guid: 31d7f74da70eb144f9a1c89cb8db0729, type: 3}
-  - {fileID: 930026083976683566, guid: dcee7b48bc5325146bb5351da6f96e41, type: 3}
-  - {fileID: 3863313576614964610, guid: 2fd0466c4505fcc4e9ae4db07cf05d1c, type: 3}
+  - {fileID: 8603129043202742509, guid: 71ca8a8022a2c4444b3c0ccbddae8796, type: 3}
+  - {fileID: 8603129043202742509, guid: 588cfaa1d0c629948aec8a32fb94ef47, type: 3}
+  - {fileID: 8603129043202742509, guid: 8d7ce40370c409f4f9e1b6c3fa15fffa, type: 3}
+  - {fileID: 8603129043202742509, guid: 15f918abf2be15744b86533df46b2af5, type: 3}
+  - {fileID: 8603129043202742509, guid: e0c27c49d59d87e4a91a928e7a996915, type: 3}
+  - {fileID: 8603129043202742509, guid: a041f1af25c0ab840919c877eda9ded7, type: 3}
+  - {fileID: 8603129043202742509, guid: 2085ee2f6bc462140bdd10591387be7f, type: 3}
+  - {fileID: 8603129043202742509, guid: d204e9c2cdd108541a9a519d6a4b1bd1, type: 3}
+  - {fileID: 8603129043202742509, guid: 822dd475a6e596a43b69898ebe28a9b0, type: 3}
+  - {fileID: 8603129043202742509, guid: a2ebd41643e795b44a0aeda54dff0468, type: 3}
 --- !u!4 &372451936
 Transform:
   m_ObjectHideFlags: 0
@@ -2290,6 +2291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _p1Prefab: {fileID: 2820822787229237466, guid: 46640f38f938588479b13d3ae530efb8, type: 3}
   _p2Prefab: {fileID: 1317423624422183457, guid: 5c2c52f1da5a1fc499f0b4559cddf6db, type: 3}
+  P1Health: 5
 --- !u!4 &953896187
 Transform:
   m_ObjectHideFlags: 0
