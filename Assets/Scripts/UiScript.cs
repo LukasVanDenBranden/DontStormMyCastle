@@ -22,7 +22,6 @@ public class UiScript : MonoBehaviour
         _restartButton.gameObject.SetActive(false);
         _runnerwonGameOverScreen.gameObject.SetActive(false);
         _defenderwonGameOverScreen.gameObject.SetActive(false);
-        _startButton.OnPointerEnter += OnButtonHover;
         _startButton.onClick.AddListener(OnStartButtonClick);
         _restartButton.onClick.AddListener(OnRestartButtonClick);
     }
@@ -52,10 +51,6 @@ public class UiScript : MonoBehaviour
     public void OnStartButtonClick()
     {
         _startButtonPressed = true;
-    }
-    public void OnButtonHover()
-    {
-        AudioManager.Instance.PlayButtonHover();
     }
     public void OnRestartButtonClick()
     {
