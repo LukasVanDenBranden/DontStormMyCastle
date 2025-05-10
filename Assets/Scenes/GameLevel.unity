@@ -2418,7 +2418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0eb6bbe0e12c040b28ed0513603326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiScript: {fileID: 1934437232}
+  _uiScript: {fileID: 1934437232}
   CurrentState: 0
 --- !u!4 &1032112749 stripped
 Transform:
@@ -4125,9 +4125,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91303b0503548ca44b7fcefa5e5a6087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _heartImageDistance: 100
   startScreenImage: {fileID: 2094591462}
   _winImage: {fileID: 2800000, guid: 54240bcbcb29cd44dbb1ea2acbf56268, type: 3}
   _lossImage: {fileID: 2800000, guid: 51d83f117ae080b4c867d6e4a6e2dc94, type: 3}
+  _heartTexture: {fileID: 2800000, guid: be79791748efa984580d851928c55e8f, type: 3}
   _startButton: {fileID: 1570538690}
   _restartButton: {fileID: 403624474}
   _runnerWinLossRectangle:
@@ -4142,6 +4144,12 @@ MonoBehaviour:
     y: 50
     width: 600
     height: 600
+  _firstHeartRect:
+    serializedVersion: 2
+    x: 50
+    y: 50
+    width: 100
+    height: 100
   _startButtonPressed: 0
   _restartButtonPressed: 0
 --- !u!1 &1964749244

@@ -11,14 +11,4 @@ public class P1Health : MonoBehaviour
     {
         HeartsRemaining = AmountOfHearts;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (HeartsRemaining <= 0)
-        {
-            Debug.Log("u ded");
-            Time.timeScale = 0;
-        }
-    }
 }

@@ -2,28 +2,31 @@ using UnityEngine;
 
 public class GameStateScript : MonoBehaviour
 {
-    [SerializeField] UiScript uiScript;
-
+    [SerializeField] UiScript _uiScript;
+    private int _p1Hearts;
     private bool _runnerwon;
     public enum GameState
     {
-        TitelScreen,
+        TitleScreen,
         Playing,
         GameOver
     }
     public GameState CurrentState;
     void Start()
     {
-        CurrentState = GameState.TitelScreen;
+        CurrentState = GameState.TitleScreen;
+        Time.timeScale = 0;
     }
 
     private void Update()
     {
-        if (CurrentState == GameState.TitelScreen) // on start
+        if (CurrentState == GameState.TitleScreen) // on start
         {
-            if (uiScript._startButtonPressed == true)
+            if (_uiScript._startButtonPressed == true)
             {
-                uiScript.OnGameStart();
+                Time.timeScale = 1;
+                _p1Hearts = P1Health.HeartsRemaining;
+                _uiScript.OnGameStart();
                 CurrentState = GameState.Playing;
             }
         }
@@ -32,15 +35,17 @@ public class GameStateScript : MonoBehaviour
             if (P1Health.HeartsRemaining <= 0)
             {
                 Time.timeScale = 0;
-                uiScript.ActivateGameOverScreen();
+                _uiScript.ActivateGameOverScreen();
                 CurrentState = GameState.GameOver;
             }
         }
         else // Game Over
         {
-            if (uiScript._restartButtonPressed == true)
+            if (_uiScript._restartButtonPressed == true)
             {
-                uiScript.OnGameStart();
+                Time.timeScale = 1;
+                P1Health.HeartsRemaining = _p1Hearts;
+                _uiScript.OnGameStart();
                 CurrentState = GameState.Playing;
             }
         }
@@ -48,9 +53,13 @@ public class GameStateScript : MonoBehaviour
 
     private void OnGUI()
     {
-        if (CurrentState == GameState.GameOver)
+        if (CurrentState == GameState.Playing)
         {
-            uiScript.DrawWinAndLoss(_runnerwon);
+            _uiScript.DrawHearts();
+        }
+        else if (CurrentState == GameState.GameOver)
+        {
+            _uiScript.DrawWinAndLoss(_runnerwon);
         }
     }
 }
