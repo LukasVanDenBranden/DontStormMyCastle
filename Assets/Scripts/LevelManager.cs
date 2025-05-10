@@ -7,20 +7,55 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> _pickupPrefabsP1;
     [SerializeField] private List<GameObject> _pickupPrefabsP2;
+    [SerializeField] private List<GameObject> _obstaclePrefabs;
+    private FloorManager _floorManager;
 
-    private float tempPickupTime = 10; //in seconds
-    private float tempPickupTimer = 5;
-    private Vector3 tempSpawnPosition = new Vector3(0, 1, -25);
+    //stats
+    private float _pickupsP1SpawnTime = 10; //in seconds
+    private float _pickupsP2SpawnTime = 10; //in seconds
+    private float _obstacleSpawnTime = 0.5f; //in seconds
+
+    //script vars
+    private float _pickupP1Timer = 5;
+    private float _pickupP2Timer = 5;
+    private float _obstacleTimer = 0.5f;
+    private Vector3 _pickupP2Place = new Vector3(0, 1, -25);
+    private float _obstacleSpawnZ = 50f;
+
+    private void Start()
+    {
+        _floorManager = FindFirstObjectByType<FloorManager>();
+    }
 
     private void FixedUpdate()
     {
-        tempPickupTimer -= Time.fixedDeltaTime;
+        PlacePickups();
+        PlaceObstacles();
+    }
 
-        if(tempPickupTimer < 0 )
+    private void PlacePickups()
+    {
+        //place pickups for P2
+        _pickupP1Timer -= Time.fixedDeltaTime;
+        _pickupP2Timer -= Time.fixedDeltaTime;
+
+        if (_pickupP2Timer < 0)
         {
-            tempSpawnPosition.x = Random.Range(-20, 20);
-            Instantiate(_pickupPrefabsP2[Random.Range(0, _pickupPrefabsP2.Count)], tempSpawnPosition, Quaternion.identity);
-            tempPickupTimer += tempPickupTime;
+            _pickupP2Place.x = Random.Range(-20, 20);
+            Instantiate(_pickupPrefabsP2[Random.Range(0, _pickupPrefabsP2.Count)], _pickupP2Place, Quaternion.identity);
+            _pickupP2Timer += _pickupsP2SpawnTime - _floorManager.GetFloorSpeed()/10;
+        }
+    }
+
+    private void PlaceObstacles()
+    {
+        _obstacleTimer -= Time.fixedDeltaTime;
+
+        if (_obstacleTimer < 0)
+        {
+            Vector3 obstacleSpawnPosition = new Vector3(Random.Range(-20, 20), 0, _obstacleSpawnZ);
+            Instantiate(_obstaclePrefabs[Random.Range(0, _obstaclePrefabs.Count)], obstacleSpawnPosition, Quaternion.identity);
+            _obstacleTimer += _obstacleSpawnTime - _floorManager.GetFloorSpeed() / 100;
         }
     }
 }

@@ -7,9 +7,11 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject _p1Prefab;
     [SerializeField] private GameObject _p2Prefab;
 
+    [HideInInspector] public int P1Health = 5;
+
     private void Awake()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 0;
 
         var gamepads = Gamepad.all; //get all controllers
         var keyboard = Keyboard.current; //get keyboard

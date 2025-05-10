@@ -1,65 +1,63 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameStateScript : MonoBehaviour
 {
-    [SerializeField] UiScript _uiScript;
-    private int _p1Hearts;
-    private bool _runnerwon;
+    [SerializeField] UiScript uiScript;
+
+    public GameObject Runner;
+
+    public static bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
     public enum GameState
     {
-        TitleScreen,
+        TitelScreen,
         Playing,
         GameOver
     }
     public GameState CurrentState;
     void Start()
     {
-        CurrentState = GameState.TitleScreen;
-        Time.timeScale = 0;
+        CurrentState = GameState.TitelScreen;
+            Runner = GameObject.FindWithTag("Player");
     }
 
     private void Update()
     {
-        if (CurrentState == GameState.TitleScreen) // on start
+        if (CurrentState == GameState.TitelScreen) // on start
         {
-            if (_uiScript._startButtonPressed == true)
+            if (uiScript._startButtonPressed == true)
             {
                 Time.timeScale = 1;
-                _p1Hearts = P1Health.HeartsRemaining;
-                _uiScript.OnGameStart();
+                uiScript.OnGameStart();
                 CurrentState = GameState.Playing;
             }
         }
         else if (CurrentState == GameState.Playing) // while playing
         {
-            if (P1Health.HeartsRemaining <= 0)
+
+            if (FindFirstObjectByType<PlayerManager>().P1Health <= 0 || Runner.transform.position.y <= -20)
             {
                 Time.timeScale = 0;
-                _uiScript.ActivateGameOverScreen();
+                uiScript.ActivateGameOverScreen();
+                CurrentState = GameState.GameOver;
+            }
+
+            if (Runner.transform.position.z > 45 && Locks.index >= 3 )
+            {
+                Time.timeScale = 0;
+                _runnerwon = true;
+                uiScript.ActivateGameOverScreen();
                 CurrentState = GameState.GameOver;
             }
         }
         else // Game Over
         {
-            if (_uiScript._restartButtonPressed == true)
+            if (uiScript._restartButtonPressed == true)
             {
-                Time.timeScale = 1;
-                P1Health.HeartsRemaining = _p1Hearts;
-                _uiScript.OnGameStart();
+                uiScript.OnGameStart();
                 CurrentState = GameState.Playing;
             }
         }
     }
 
-    private void OnGUI()
-    {
-        if (CurrentState == GameState.Playing)
-        {
-            _uiScript.DrawHearts();
-        }
-        else if (CurrentState == GameState.GameOver)
-        {
-            _uiScript.DrawWinAndLoss(_runnerwon);
-        }
-    }
 }

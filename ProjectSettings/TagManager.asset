@@ -8,6 +8,7 @@ TagManager:
   - AttackingCamera
   - Pickup
   - Floor
+  - Castle
   layers:
   - Default
   - TransparentFX

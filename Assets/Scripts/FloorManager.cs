@@ -8,7 +8,7 @@ public class FloorManager : MonoBehaviour
     //stats vars
     private readonly int _trackLength = 110; //total length of the moving floor
     private readonly int _trackStartX = -50; //track will go to x -50
-    private readonly float _floorSpeed = 5f;
+    private float _floorSpeed = 10f;
 
     //script vars
     private GameObject[] _floorTiles;
@@ -31,6 +31,8 @@ public class FloorManager : MonoBehaviour
     void FixedUpdate()
     {
         UpdateFloor();
+        //make floor faster
+        _floorSpeed += Time.fixedDeltaTime / 10;
     }
 
     void UpdateFloor()
@@ -42,5 +44,10 @@ public class FloorManager : MonoBehaviour
             if (tile.transform.position.z < _trackStartX)
                 tile.transform.position += new Vector3(0, 0, _trackLength); //reset tile to the back once needed
         }
+    }
+
+    public float GetFloorSpeed()
+    {
+        return _floorSpeed;
     }
 }

@@ -5,15 +5,12 @@ public class BoulderBase : MonoBehaviour
 {
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("hit");
-            P1Health.HeartsRemaining -= 1;
-            Debug.Log(P1Health.HeartsRemaining);
-
+            FindFirstObjectByType<PlayerManager>().P1Health -= 1;
             Destroy(gameObject);
         }
-        else if(collision.gameObject.tag == "Pickup")
+        else if(collision.gameObject.CompareTag("Pickup"))
         {
             collision.gameObject.GetComponent<Pickup>().PlayerAttempsPickup(false);
         }
