@@ -11,7 +11,6 @@ public class UiScript : MonoBehaviour
     [SerializeField] Image _defenderwonGameOverScreen;
     [SerializeField] Button _startButton;
     [SerializeField] Button _restartButton;
-    private Vector2 _screenDimensions;
     public bool _startButtonPressed;
     public bool _restartButtonPressed;
 

@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour
     private float _pickupsP1SpawnTime = 10; //in seconds
     private float _pickupsP2SpawnTime = 10; //in seconds
     private float _obstacleSpawnTime = 0.5f; //in seconds
+    private float _trackWidth = 20f;
 
     //script vars
     private float _pickupP1Timer = 5;
@@ -41,7 +42,7 @@ public class LevelManager : MonoBehaviour
 
         if (_pickupP2Timer < 0)
         {
-            _pickupP2Place.x = Random.Range(-20, 20);
+            _pickupP2Place.x = Random.Range(-_trackWidth, _trackWidth);
             Instantiate(_pickupPrefabsP2[Random.Range(0, _pickupPrefabsP2.Count)], _pickupP2Place, Quaternion.identity);
             _pickupP2Timer += _pickupsP2SpawnTime - _floorManager.GetFloorSpeed()/10;
         }
@@ -53,7 +54,7 @@ public class LevelManager : MonoBehaviour
 
         if (_obstacleTimer < 0)
         {
-            Vector3 obstacleSpawnPosition = new Vector3(Random.Range(-20, 20), 0, _obstacleSpawnZ);
+            Vector3 obstacleSpawnPosition = new Vector3(Random.Range(-_trackWidth, _trackWidth), 0, _obstacleSpawnZ);
             Instantiate(_obstaclePrefabs[Random.Range(0, _obstaclePrefabs.Count)], obstacleSpawnPosition, Quaternion.identity);
             _obstacleTimer += _obstacleSpawnTime - _floorManager.GetFloorSpeed() / 100;
         }

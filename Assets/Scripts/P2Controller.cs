@@ -19,7 +19,6 @@ public class P2Controller : MonoBehaviour
 
     //stats vars
     private readonly float _moveSpeed = 1000f;
-    private readonly float _maxRotation = 50f;
     private readonly float _primaryMaxThrowForce = 30f;
     private readonly float _primaryThrowTime = 3f; //time it takes to reach max throwing force in seconds
     private readonly float _boulderDespawnYLevel = -10f;
@@ -232,7 +231,7 @@ public class P2Controller : MonoBehaviour
         _primaryInput = GetComponent<PlayerInput>().actions["Primary"].IsPressed();
     }
 
-    public void SpawnSpecialBoulded(int boulderIndex)
+    public void SpawnSpecialBoulder(int boulderIndex)
     {
         _nextBoulderIndex = boulderIndex;
     }

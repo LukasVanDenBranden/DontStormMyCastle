@@ -14,7 +14,7 @@ public class GameStateScript : MonoBehaviour
         Playing,
         GameOver
     }
-    public GameState CurrentState;
+    private GameState CurrentState;
     void Start()
     {
         uiScript = FindFirstObjectByType<UiScript>();

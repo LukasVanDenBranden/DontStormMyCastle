@@ -41,7 +41,7 @@ public class Pickup : MonoBehaviour
         }
         else if (isP1 == false && _isForP1 == false)
         {
-            _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulded(_powerupIndex);
+            _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulder(_powerupIndex);
             Destroy(this.gameObject);
         }
     }

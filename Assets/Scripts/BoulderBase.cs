@@ -7,11 +7,13 @@ public class BoulderBase : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+        Debug.Log("boulder hit player");
             FindFirstObjectByType<PlayerManager>().P1Health -= 1;
             Destroy(gameObject);
         }
         else if(collision.gameObject.CompareTag("Pickup"))
         {
+            Debug.Log("boulder hit pickup");
             collision.gameObject.GetComponent<Pickup>().PlayerAttempsPickup(false);
         }
     }

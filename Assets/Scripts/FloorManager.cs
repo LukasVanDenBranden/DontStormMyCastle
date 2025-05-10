@@ -10,12 +10,14 @@ public class FloorManager : MonoBehaviour
     private readonly int _trackStartX = -50; //track will go to x -50
     private float _floorSpeed = 10f;
 
+    private int _tileWidth = 5;
+
     //script vars
     private GameObject[] _floorTiles;
 
     private void Awake()
     {
-        _floorTiles = new GameObject[_trackLength/10]; //floor tiles are 10 width, thus amount of tiles is 1 tenth the length
+        _floorTiles = new GameObject[_trackLength/ _tileWidth]; //floor tiles are 10 width, thus amount of tiles is 1 tenth the length
     }
 
     private void Start()
@@ -23,7 +25,7 @@ public class FloorManager : MonoBehaviour
         //spawn floor tiles
         for (int i = 0; i < _floorTiles.Length; i++)
         {
-            Vector3 position = new Vector3(0, 0, i*10 + _trackStartX);
+            Vector3 position = new Vector3(0, 0, i * _tileWidth + _trackStartX);
             _floorTiles[i] = Instantiate(_tilePrefab, position, Quaternion.identity, transform);
         }
     }
