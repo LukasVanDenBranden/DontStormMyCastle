@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -11,6 +12,7 @@ public class UiScript : MonoBehaviour
     [SerializeField] Image _defenderwonGameOverScreen;
     [SerializeField] Button _startButton;
     [SerializeField] Button _restartButton;
+    [SerializeField] Image[] _hearts;
     public bool _startButtonPressed;
     public bool _restartButtonPressed;
 
@@ -24,6 +26,11 @@ public class UiScript : MonoBehaviour
         _defenderwonGameOverScreen.gameObject.SetActive(false);
         _startButton.onClick.AddListener(OnStartButtonClick);
         _restartButton.onClick.AddListener(OnRestartButtonClick);
+
+        foreach (Image heart in _hearts)
+        {
+            heart.gameObject.SetActive(false);
+        }
     }
 
 
@@ -45,8 +52,20 @@ public class UiScript : MonoBehaviour
         _restartButton.gameObject.SetActive(true);
         _runnerwonGameOverScreen.gameObject.SetActive(true);
         _defenderwonGameOverScreen.gameObject.SetActive(true);
+        foreach (Image heart in _hearts)
+        {
+            heart.gameObject.SetActive(false);
+        }
     }
     
+    public void DrawHearts()
+    {
+        int health = FindFirstObjectByType<PlayerManager>().P1Health;
+        for (int i = 0; i < 5; i++)
+        {
+            _hearts[i].gameObject.SetActive(i + 1 <= health);
+        }
+    }
 
     public void OnStartButtonClick()
     {
