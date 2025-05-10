@@ -55,7 +55,11 @@ public class ObstacleScript : MonoBehaviour
         //TODO: add a check that doesnt let this code scale in the negative or 0!!!!!!!! or the game could crash
         //scale down at end
         if (transform.position.z < -40)
+        {
             transform.localScale = _baseScale + Vector3.one * (transform.position.z+40)/10;
+            if (transform.localScale.x <= 0 || transform.localScale.y <= 0 || transform.localScale.z <= 0)
+                transform.localScale = Vector3.one * 0.001f;
+        }
     }
 
     private void UpdateMovement()

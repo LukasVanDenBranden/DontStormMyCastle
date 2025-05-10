@@ -53,17 +53,32 @@ public class P1Controller : MonoBehaviour
     {
         //get input force
         Vector3 inputs = new Vector3(_moveInput.x * _walkSpeedSideways * Time.fixedDeltaTime, 0, _moveInput.y * _walkSpeedForward * Time.fixedDeltaTime + _moveInput.y * _floorManager.GetFloorSpeed());
-
         //track
         Vector3 track = new Vector3(0, 0, -_floorManager.GetFloorSpeed());
         //get gravity
         Vector3 gravity = _gravityMultiplier * Time.fixedDeltaTime * Vector3.down;
 
         //if moving forward but there is an obstacle in front, player move forward is turned off
-        if(Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.forward, 0.8f, _obstacleMask) && inputs.z > 0)
+        if(Physics.Raycast(transform.position + new Vector3(0, 0.25f, 0), Vector3.forward, 0.9f + Mathf.Max(0, _rb.linearVelocity.z/100), _obstacleMask) && inputs.z > 0) //added [0, _rb.linearVelocity.z/100], it does + vel.z/100 when its positive (faster = look more ahead)
+        {
+            inputs = new Vector3(inputs.x, inputs.y, 0);
+            _currentDashVelocity = new Vector3(_currentDashVelocity.x, _currentDashVelocity.y, 0);
+        }//if moving backwards but there is an obstacle, player move backwards is turned off
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.25f, 0), Vector3.back, 0.9f, _obstacleMask) && inputs.z < 0)
         {
             inputs = new Vector3(inputs.x, inputs.y, 0);
         }
+        //if left but there is an obstacle, player move left is turned off
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.25f, 0), Vector3.left, 0.9f, _obstacleMask) && inputs.x < 0)
+        {
+            inputs = new Vector3(0, inputs.y, inputs.z);
+        }
+        //if right but there is an obstacle, player move right is turned off
+        else if (Physics.Raycast(transform.position + new Vector3(0, 0.25f, 0), Vector3.right, 0.9f, _obstacleMask) && inputs.x > 0)
+        {
+            inputs = new Vector3(0, inputs.y, inputs.z);
+        }
+
         //if on ground
         if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.52f, _floorMask))
         {
