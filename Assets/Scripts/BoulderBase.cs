@@ -9,6 +9,7 @@ public class BoulderBase : MonoBehaviour
         {
         Debug.Log("boulder hit player");
             FindFirstObjectByType<PlayerManager>().P1Health -= 1;
+            GamepadManager.Instance.RumbleController(1, 0.3f, 0.1f);
             Destroy(gameObject);
         }
         else if(collision.gameObject.CompareTag("Pickup"))

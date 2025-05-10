@@ -102,10 +102,10 @@ public class P1Controller : MonoBehaviour
         _timeSinceLastDash = 0;
         //dash
         _currentDashVelocity = Vector3.forward * _dashVelocity;
+        GamepadManager.Instance.RumbleController(1, 0.15f, 0.05f);
     }
     private void TryJump()
     {
-
         //if no ground found dont jump
         if (!Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.55f, _floorMask))
             return;
