@@ -24,7 +24,6 @@ public class P1Controller : MonoBehaviour
 
     //script vars
     private Vector2 _moveInput;
-    private Vector2 _rotateInput;
     private bool _primaryInput = false;
     private float _timeSinceLastDash = 0f;
     private Vector3 _currentDashVelocity = Vector3.zero;
@@ -59,31 +58,34 @@ public class P1Controller : MonoBehaviour
         Vector3 gravity = _gravityMultiplier * Time.fixedDeltaTime * Vector3.down;
 
         //if moving forward but there is an obstacle in front, player move forward is turned off
-        if(Physics.Raycast(transform.position + new Vector3(0, 0.25f, 0), Vector3.forward, 0.9f + Mathf.Max(0, _rb.linearVelocity.z/100), _obstacleMask) && inputs.z > 0) //added [0, _rb.linearVelocity.z/100], it does + vel.z/100 when its positive (faster = look more ahead)
+        if(Physics.Raycast(transform.position, Vector3.forward, 0.9f + Mathf.Max(0, _rb.linearVelocity.z/100), _obstacleMask) && inputs.z > 0) //added [0, _rb.linearVelocity.z/100], it does + vel.z/100 when its positive (faster = look more ahead)
         {
             inputs = new Vector3(inputs.x, inputs.y, 0);
             _currentDashVelocity = new Vector3(_currentDashVelocity.x, _currentDashVelocity.y, 0);
         }//if moving backwards but there is an obstacle, player move backwards is turned off
-        if (Physics.Raycast(transform.position + new Vector3(0, 0.25f, 0), Vector3.back, 0.9f, _obstacleMask) && inputs.z < 0)
+        if (Physics.Raycast(transform.position, Vector3.back, 0.9f, _obstacleMask) && inputs.z < 0)
         {
             inputs = new Vector3(inputs.x, inputs.y, 0);
         }
         //if left but there is an obstacle, player move left is turned off
-        if (Physics.Raycast(transform.position + new Vector3(0, 0.25f, 0), Vector3.left, 0.9f, _obstacleMask) && inputs.x < 0)
+        if (Physics.Raycast(transform.position, Vector3.left, 0.9f, _obstacleMask) && inputs.x < 0)
         {
             inputs = new Vector3(0, inputs.y, inputs.z);
         }
         //if right but there is an obstacle, player move right is turned off
-        else if (Physics.Raycast(transform.position + new Vector3(0, 0.25f, 0), Vector3.right, 0.9f, _obstacleMask) && inputs.x > 0)
+        else if (Physics.Raycast(transform.position, Vector3.right, 0.9f, _obstacleMask) && inputs.x > 0)
         {
             inputs = new Vector3(0, inputs.y, inputs.z);
         }
 
         //if on ground
-        if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.52f, _floorMask))
+        if (Physics.SphereCast(transform.position + new Vector3(0, 0.5f, 0), 0.5f, Vector3.down, out RaycastHit hit, 0.5f, _floorMask))
         {
             _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
             gravity = Vector3.zero;
+
+            //set player at ground level
+            _rb.MovePosition(new Vector3(_rb.position.x, hit.point.y + 0.05f, _rb.position.z));
         }
         //apply forces by input
         _rb.linearVelocity = inputs + track + Vector3.up * _rb.linearVelocity.y + gravity + _currentDashVelocity;
@@ -115,10 +117,6 @@ public class P1Controller : MonoBehaviour
     public void OnMove(InputValue value)
     {
         _moveInput = value.Get<Vector2>();
-    }
-    public void OnRotate(InputValue value)
-    {
-        _rotateInput = value.Get<Vector2>();
     }
     public void OnPrimary(InputValue value)
     {
