@@ -23,7 +23,7 @@ public class EndScreen : MonoBehaviour
         _restartButton.onClick.AddListener(OnClick);
         foreach(Image img in _images)
         {
-            img.gameObject.SetActive(false);            
+            img.gameObject.SetActive(false);
         }
 
         _restartButton.gameObject.SetActive(false);
@@ -39,7 +39,6 @@ public class EndScreen : MonoBehaviour
         {
             _images[0].transform.position = _player1ImagePosition;
             _images[1].transform.position = _player2ImagePosition;
-
         }
 
        

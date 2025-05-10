@@ -15,7 +15,7 @@ public class P1Controller : MonoBehaviour
 
     //stats vars
     private readonly float _walkSpeedSideways = 1000f;
-    private readonly float _walkSpeedForward = 1000f;
+    private readonly float _walkSpeedForward = 300f; //speed difference with floor (if 0 player will go as fast as floor)
     private readonly float _dashTimeout = 5f; //time it takes to recharge dash
     private readonly float _dashVelocity = 100f;
     private readonly float _jumpVelocity = 40f;
@@ -51,7 +51,7 @@ public class P1Controller : MonoBehaviour
     private void UpdateMovement()
     {
         //get input force
-        Vector3 inputs = new Vector3(_moveInput.x * _walkSpeedSideways * Time.fixedDeltaTime, 0, _moveInput.y * _walkSpeedForward * Time.fixedDeltaTime);
+        Vector3 inputs = new Vector3(_moveInput.x * _walkSpeedSideways * Time.fixedDeltaTime, 0, _moveInput.y * _walkSpeedForward * Time.fixedDeltaTime + _moveInput.y * _floorManager.GetFloorSpeed());
         //track
         Vector3 track = new Vector3(0, 0, -_floorManager.GetFloorSpeed());
         //get gravity
