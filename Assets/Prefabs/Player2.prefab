@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _boulderPrefabList:
   - {fileID: 502652657922175749, guid: e71fa27dde09e7e4a93bdeda8de06ec5, type: 3}
+  - {fileID: 502652657922175749, guid: 75404d657b4f6b8429b7e075ac4990e3, type: 3}
   - {fileID: 502652657922175749, guid: f9aca8ea509cd384282f338a0c0d7447, type: 3}
   - {fileID: 502652657922175749, guid: 8f5f432f107056d4cae57e24a76d0e5f, type: 3}
   _aimingCirclePrefb: {fileID: 5566021409037920571, guid: 06780540af9b98e4ba3cf8568d9c5d28, type: 3}

@@ -17,6 +17,7 @@ public class SlowingBoulder : BoulderBase
     }
     protected override void OnCollisionEnter(Collision collision)
     {
+        base.OnCollisionEnter(collision);
         if (_haslanded) return;
         _haslanded = true;
         CreateNewSlowingField();
