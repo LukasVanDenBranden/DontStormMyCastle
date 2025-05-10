@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class GameStateScript : MonoBehaviour
 {
-    [SerializeField] UiScript uiScript;
+    private UiScript uiScript;
 
-    public GameObject Runner;
+    private GameObject Runner;
 
     public static bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
     public enum GameState
@@ -17,8 +17,9 @@ public class GameStateScript : MonoBehaviour
     public GameState CurrentState;
     void Start()
     {
+        uiScript = FindFirstObjectByType<UiScript>();
         CurrentState = GameState.TitelScreen;
-            Runner = GameObject.FindWithTag("Player");
+        Runner = FindFirstObjectByType<P1Controller>().gameObject;
     }
 
     private void Update()
