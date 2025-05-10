@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<GameObject> _pickupPrefabsP1;
     [SerializeField] private List<GameObject> _pickupPrefabsP2;
     [SerializeField] private List<GameObject> _obstaclePrefabs;
+    public bool WeWantOpstacles = true;
     private FloorManager _floorManager;
 
     //stats
@@ -31,7 +32,8 @@ public class LevelManager : MonoBehaviour
     private void FixedUpdate()
     {
         PlacePickups();
-        PlaceObstacles();
+        
+        if (WeWantOpstacles)    PlaceObstacles();
     }
 
     private void PlacePickups()
@@ -58,5 +60,10 @@ public class LevelManager : MonoBehaviour
             Instantiate(_obstaclePrefabs[Random.Range(0, _obstaclePrefabs.Count)], obstacleSpawnPosition, Quaternion.identity);
             _obstacleTimer += _obstacleSpawnTime - _floorManager.GetFloorSpeed() / 100;
         }
+    }
+
+    public float GetTrackWidth()
+    {
+        return _trackWidth;
     }
 }

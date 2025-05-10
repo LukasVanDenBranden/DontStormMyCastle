@@ -7,7 +7,7 @@ public class ObstacleScript : MonoBehaviour
     private FloorManager _floorManager;
 
     //stat vars
-    private readonly float _popupTime = 0.25f; //time it takes to get full size
+    private readonly float _popupTime = 0f; //time it takes to get full size
 
     //script vars
     private Vector3 _baseScale; //scale set at start

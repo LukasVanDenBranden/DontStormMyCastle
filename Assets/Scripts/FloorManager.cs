@@ -8,7 +8,7 @@ public class FloorManager : MonoBehaviour
     //stats vars
     private readonly int _trackLength = 110; //total length of the moving floor
     private readonly int _trackStartX = -50; //track will go to x -50
-    private float _floorSpeed = 10f;
+    private static float _floorSpeed = 10f;
 
     private int _tileWidth = 5;
 
