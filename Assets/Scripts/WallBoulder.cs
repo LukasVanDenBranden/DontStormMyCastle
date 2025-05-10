@@ -19,7 +19,6 @@ public class WallBoulder : BoulderBase
     }
     protected override void OnCollisionEnter(Collision collision)
     {
-        base.OnCollisionEnter(collision);
         _haslanded = true;
     }
 }
