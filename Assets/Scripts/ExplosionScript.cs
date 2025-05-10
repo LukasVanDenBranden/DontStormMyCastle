@@ -5,6 +5,7 @@ public class ExplosionScript : MonoBehaviour
     [SerializeField] private AudioClip _explosion;
     private float _explosionDuration = 0.75f;
     private float _explosionTimer;
+    private bool _hasHit;
     private void Start()
     {
         _explosionTimer = _explosionDuration;
@@ -20,7 +21,10 @@ public class ExplosionScript : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("player hit");
-        Destroy(gameObject);
+        if (!_hasHit)
+        {
+            P1Health.HeartsRemaining--;
+        }
+        _hasHit = true;
     }
 }
