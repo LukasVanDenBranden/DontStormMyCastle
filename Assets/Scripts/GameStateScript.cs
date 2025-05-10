@@ -30,6 +30,7 @@ public class GameStateScript : MonoBehaviour
             {
                 Time.timeScale = 1;
                 uiScript.OnGameStart();
+                AudioManager.Instance.PlayMusic();
                 CurrentState = GameState.Playing;
             }
         }
@@ -43,7 +44,7 @@ public class GameStateScript : MonoBehaviour
                 CurrentState = GameState.GameOver;
             }
 
-            if (Runner.transform.position.z > 45 && Locks.index >= 3 )
+            if (Runner.transform.position.z > 45 && Locks.index >= 3)
             {
                 Time.timeScale = 0;
                 _runnerwon = true;
@@ -55,6 +56,7 @@ public class GameStateScript : MonoBehaviour
         {
             if (uiScript._restartButtonPressed == true)
             {
+                AudioManager.Instance.StopMusic();
                 uiScript.OnGameStart();
                 CurrentState = GameState.Playing;
             }
