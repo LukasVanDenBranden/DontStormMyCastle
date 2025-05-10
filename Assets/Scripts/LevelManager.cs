@@ -56,7 +56,6 @@ public class LevelManager : MonoBehaviour
             Vector3 obstacleSpawnPosition = new Vector3(Random.Range(-20, 20), 0, _obstacleSpawnZ);
             Instantiate(_obstaclePrefabs[Random.Range(0, _obstaclePrefabs.Count)], obstacleSpawnPosition, Quaternion.identity);
             _obstacleTimer += _obstacleSpawnTime - _floorManager.GetFloorSpeed() / 100;
-            Debug.Log(_obstacleTimer + " | " + _floorManager.GetFloorSpeed() / 100);
         }
     }
 }

@@ -11,6 +11,7 @@ public class P1Controller : MonoBehaviour
     private Rigidbody _rb;
     private Camera _camera;
     private FloorManager _floorManager;
+    [SerializeField] private LayerMask _obstacleMask;
     [SerializeField] private LayerMask _floorMask;
 
     //stats vars
@@ -52,13 +53,19 @@ public class P1Controller : MonoBehaviour
     {
         //get input force
         Vector3 inputs = new Vector3(_moveInput.x * _walkSpeedSideways * Time.fixedDeltaTime, 0, _moveInput.y * _walkSpeedForward * Time.fixedDeltaTime + _moveInput.y * _floorManager.GetFloorSpeed());
+
         //track
         Vector3 track = new Vector3(0, 0, -_floorManager.GetFloorSpeed());
         //get gravity
         Vector3 gravity = _gravityMultiplier * Time.fixedDeltaTime * Vector3.down;
 
+        //if moving forward but there is an obstacle in front, player move forward is turned off
+        if(Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.forward, 0.8f, _obstacleMask) && inputs.z > 0)
+        {
+            inputs = new Vector3(inputs.x, inputs.y, 0);
+        }
         //if on ground
-        if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.55f, _floorMask))
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.52f, _floorMask))
         {
             _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
             gravity = Vector3.zero;
@@ -80,6 +87,7 @@ public class P1Controller : MonoBehaviour
     }
     private void TryJump()
     {
+
         //if no ground found dont jump
         if(!Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.55f, _floorMask))
             return;
