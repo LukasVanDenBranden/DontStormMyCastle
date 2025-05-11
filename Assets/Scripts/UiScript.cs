@@ -64,7 +64,6 @@ public class UiScript : MonoBehaviour
         _runnerwonGameOverScreen.gameObject.SetActive(false);
         _defenderwonGameOverScreen.gameObject.SetActive(false);
         Locks.index = 0;
-        GameStateScript._runnerwon = false;
         UpdateHearths();
     }
     private void P1Health_OnDamage(object sender, EventArgs empty)

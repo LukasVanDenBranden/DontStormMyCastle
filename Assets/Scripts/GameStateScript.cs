@@ -4,10 +4,10 @@ using UnityEngine;
 public class GameStateScript : MonoBehaviour
 {
     private UiScript uiScript;
-
+    public static GameStateScript Instance;
     private GameObject Runner;
 
-    public static bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
+    public bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
     public enum GameState
     {
         TitelScreen,
@@ -17,6 +17,7 @@ public class GameStateScript : MonoBehaviour
     private GameState CurrentState;
     void Start()
     {
+        Instance = this;
         uiScript = FindFirstObjectByType<UiScript>();
         CurrentState = GameState.TitelScreen;
         Runner = FindFirstObjectByType<P1Controller>().gameObject;
@@ -66,4 +67,6 @@ public class GameStateScript : MonoBehaviour
             }
         }
     }
+    public GameState GetGameState() => CurrentState;
+    public bool IsRunnerWinner() => _runnerwon;
 }

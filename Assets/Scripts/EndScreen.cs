@@ -6,42 +6,41 @@ using UnityEngine.UI;
 
 public class EndScreen : MonoBehaviour
 {
-    [SerializeField] private List<Image> _images;
+    [SerializeField] private Image _winImages;
+    [SerializeField] private Image _LoseImages;
     [SerializeField] private Button _restartButton;
 
-    private Vector3 _player1ImagePosition;
-    private Vector3 _player2ImagePosition;
 
-    private Vector3 _winStartPosition;
-    private Vector3 _loseStartPosition;
+    [SerializeField] private Transform _p1WinLoseStartPosition;
+    [SerializeField] private Transform _p2WinLoseStartPosition;
 
     private void Start()
     {
-        _loseStartPosition = _images[1].transform.position;
-        _winStartPosition = _images[0].transform.position;
-
         _restartButton.onClick.AddListener(OnClick);
-        foreach(Image img in _images)
-        {
-            img.gameObject.SetActive(false);
-        }
+        _winImages.gameObject.SetActive(false);
+        _LoseImages.gameObject.SetActive(false);
+
 
         _restartButton.gameObject.SetActive(false);
-
-
-        _player1ImagePosition = _loseStartPosition;
-        _player2ImagePosition = _winStartPosition;
-
     }
     void Update()
     {
-        if (GameStateScript._runnerwon)
+        if (GameStateScript.Instance.GetGameState() != GameStateScript.GameState.GameOver) return;
+
+        _winImages.gameObject.SetActive(true);
+        _LoseImages.gameObject.SetActive(true);
+
+        if (GameStateScript.Instance.IsRunnerWinner())
         {
-            _images[0].transform.position = _player1ImagePosition;
-            _images[1].transform.position = _player2ImagePosition;
+            _winImages.transform.position = _p1WinLoseStartPosition.position;
+            _LoseImages.transform.position = _p2WinLoseStartPosition.position;
+        }
+        else
+        {
+            _winImages.transform.position = _p2WinLoseStartPosition.position;
+            _LoseImages.transform.position = _p1WinLoseStartPosition.position;
         }
 
-       
     }
 
 
