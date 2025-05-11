@@ -21,6 +21,7 @@ public class ExplosionScript : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.gameObject.CompareTag("Player")) return;
         if (!_hasHit)
         {
             P1Health.Instance.takeDamage(1);
