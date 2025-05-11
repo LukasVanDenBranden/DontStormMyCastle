@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,14 +8,19 @@ public class Pickup : MonoBehaviour
 
     [SerializeField] bool _isForP1; //if true pickup is for p1, else p2
     private readonly float _attractionForce = 300f;
-    private readonly float _pickupDistance = 7.5f;
+    private readonly float _pickupDistance = 7f;
 
     private void Awake()
     {
         if (_isForP1)
+        {
             _targetTransform = FindFirstObjectByType<P1Controller>().transform;
+        }
         else
+        {
             _targetTransform = FindFirstObjectByType<P2Controller>().transform;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll; //freeze
+        }
     }
 
     private void FixedUpdate()
@@ -25,7 +31,8 @@ public class Pickup : MonoBehaviour
 
         GetComponent<Rigidbody>().AddForce(pullDirection * pullForce);
 
-        if (Vector3.Distance(_targetTransform.position, transform.position) < 1)
+        //if close enough pick up
+        if (Vector3.Distance(_targetTransform.position, transform.position) < 2.5f)
             PlayerAttempsPickup(true);
     }
 

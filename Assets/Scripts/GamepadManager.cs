@@ -17,6 +17,13 @@ public class GamepadManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        //turn off rumble on start
+        RumbleController(1, 0, 0.1f);
+        RumbleController(2, 0, 0.1f);
+    }
+
     //duration is in seconds
     public void RumbleController(int playerNr, float intensity, float duration)
     {

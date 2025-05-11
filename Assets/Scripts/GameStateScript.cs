@@ -42,6 +42,10 @@ public class GameStateScript : MonoBehaviour
                 Time.timeScale = 0;
                 uiScript.ActivateGameOverScreen();
                 CurrentState = GameState.GameOver;
+
+                //when game over vibrate controllers
+                GamepadManager.Instance.RumbleController(1, 0.3f, 0.05f);
+                GamepadManager.Instance.RumbleController(2, 0.3f, 0.05f);
             }
 
             if (Runner.transform.position.z > 45 && Locks.index >= 3)
@@ -54,8 +58,6 @@ public class GameStateScript : MonoBehaviour
         }
         else // Game Over
         {
-            GamepadManager.Instance.RumbleController(1, 0.3f, 0.05f);
-            GamepadManager.Instance.RumbleController(2, 0.3f, 0.05f);
             if (uiScript._restartButtonPressed == true)
             {
                 AudioManager.Instance.StopMusic();

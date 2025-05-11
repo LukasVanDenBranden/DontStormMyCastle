@@ -8,19 +8,21 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<GameObject> _pickupPrefabsP1;
     [SerializeField] private List<GameObject> _pickupPrefabsP2;
     [SerializeField] private List<GameObject> _obstaclePrefabs;
-    public bool WeWantOpstacles = true;
+    [SerializeField] private GameObject _keyPrefab;
     private FloorManager _floorManager;
 
     //stats
     private float _pickupsP1SpawnTime = 10; //in seconds
     private float _pickupsP2SpawnTime = 10; //in seconds
     private float _obstacleSpawnTime = 0.5f; //in seconds
+    private float _keySpawnTime = 5f; //in seconds
     private float _trackWidth = 20f;
 
     //script vars
     private float _pickupP1Timer = 5;
     private float _pickupP2Timer = 5;
     private float _obstacleTimer = 0.5f;
+    private float _keySpawnTimer = 5f;
     private Vector3 _pickupP2Place = new Vector3(0, 1, -25);
     private float _obstacleSpawnZ = 50f;
 
@@ -33,7 +35,9 @@ public class LevelManager : MonoBehaviour
     {
         PlacePickups();
         
-        if (WeWantOpstacles)    PlaceObstacles();
+        PlaceObstacles();
+
+        PlaceKeys();
     }
 
     private void PlacePickups()
@@ -59,6 +63,18 @@ public class LevelManager : MonoBehaviour
             Vector3 obstacleSpawnPosition = new Vector3(Random.Range(-_trackWidth, _trackWidth), 0, _obstacleSpawnZ);
             Instantiate(_obstaclePrefabs[Random.Range(0, _obstaclePrefabs.Count)], obstacleSpawnPosition, Quaternion.identity);
             _obstacleTimer += _obstacleSpawnTime - _floorManager.GetFloorSpeed() / 100;
+        }
+    }
+
+    private void PlaceKeys()
+    {
+        _keySpawnTimer -= Time.fixedDeltaTime;
+
+        if (_keySpawnTimer < 0)
+        {
+            Vector3 keySpawnPosition = new Vector3(Random.Range(-_trackWidth, _trackWidth), 5, _obstacleSpawnZ);
+            GameObject key = Instantiate(_keyPrefab, keySpawnPosition, Quaternion.identity);
+            _keySpawnTimer += _keySpawnTime - _floorManager.GetFloorSpeed() / 100;
         }
     }
 

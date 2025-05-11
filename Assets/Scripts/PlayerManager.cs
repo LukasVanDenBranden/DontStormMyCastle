@@ -22,6 +22,8 @@ public class PlayerManager : MonoBehaviour
             // Two gamepads connected
             PlayerInput.Instantiate(_p1Prefab, playerIndex: 0, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[0]);
             PlayerInput.Instantiate(_p2Prefab, playerIndex: 1, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[1]);
+            if (GamepadManager.Instance == null)
+                GamepadManager.Instance = FindFirstObjectByType<GamepadManager>();
             GamepadManager.Instance.P1GamePad = gamepads[0];
             GamepadManager.Instance.P2GamePad = gamepads[1];
         }
@@ -30,6 +32,8 @@ public class PlayerManager : MonoBehaviour
             // One gamepad and keyboard connected
             PlayerInput.Instantiate(_p1Prefab, playerIndex: 0, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: keyboard);
             PlayerInput.Instantiate(_p2Prefab, playerIndex: 1, controlScheme: "GamePlay", splitScreenIndex: -1, pairWithDevice: gamepads[0]);
+            if (GamepadManager.Instance == null)
+                GamepadManager.Instance = FindFirstObjectByType<GamepadManager>();
             GamepadManager.Instance.P2GamePad = gamepads[0];
         }
         else
