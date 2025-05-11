@@ -19,7 +19,7 @@ public class P1Controller : MonoBehaviour
     private readonly float _walkSpeedForward = 300f; //speed difference with floor (if 0 player will go as fast as floor)
     private readonly float _dashTimeout = 5f; //time it takes to recharge dash
     private readonly float _dashVelocity = 100f;
-    private readonly float _jumpVelocity = 35f;
+    private readonly float _jumpVelocity = 30f;
     private readonly float _gravityMultiplier = 120f;
 
     //script vars
@@ -102,10 +102,10 @@ public class P1Controller : MonoBehaviour
         _timeSinceLastDash = 0;
         //dash
         _currentDashVelocity = Vector3.forward * _dashVelocity;
+        GamepadManager.Instance.RumbleController(1, 0.15f, 0.05f);
     }
     private void TryJump()
     {
-
         //if no ground found dont jump
         if (!Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector3.down, 0.55f, _floorMask))
             return;

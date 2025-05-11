@@ -21,6 +21,8 @@ public class BombBoulder : BoulderBase
 
         if(_fuseTimer <= 0)
         {
+            GamepadManager.Instance.RumbleController(1, 0.2f, 0.15f);
+            GamepadManager.Instance.RumbleController(2, 0.2f, 0.15f);
             Instantiate(_explosion, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }

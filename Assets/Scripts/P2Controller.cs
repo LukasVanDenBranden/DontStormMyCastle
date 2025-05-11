@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -64,8 +65,9 @@ public class P2Controller : MonoBehaviour
         UpdateMovement();
         UpdatePrimary();
 
-        //update percentage
+        //update percentage [0, 1] and is used multiple times in this script
         _chargePercentage = Mathf.MoveTowards(_chargePercentage, _primaryThrowForce / _primaryMaxThrowForce, 10 * Time.fixedDeltaTime);
+        GamepadManager.Instance.RumbleController(2, (_chargePercentage * _chargePercentage)/10, 0.1f);
 
         UpdateCamera();
         UpdateUI();
@@ -81,7 +83,7 @@ public class P2Controller : MonoBehaviour
         _boulderCooldownTimer -= Time.deltaTime;
         if (_boulderCooldownTimer >= 0) return;
 
-        Vector3 trowDriection = GetInPutDirection();
+        Vector3 throwDirection = GetInPutDirection();
 
 
         if (!_primaryInput)
@@ -90,7 +92,7 @@ public class P2Controller : MonoBehaviour
             if (_currentThrowingBoulder != null)
             {
                 _currentThrowingBoulder.GetComponent<MeshRenderer>().enabled = true;
-                _currentThrowingBoulder.GetComponent<Rigidbody>().AddForce(trowDriection * _primaryThrowForce, ForceMode.Impulse); //add force with same direction player is looking
+                _currentThrowingBoulder.GetComponent<Rigidbody>().AddForce(throwDirection * _primaryThrowForce, ForceMode.Impulse); //add force with same direction player is looking
                 //reset for next boulder
                 _currentThrowingBoulder = null;
                 _primaryThrowForce = 0f;
@@ -231,8 +233,8 @@ public class P2Controller : MonoBehaviour
         _primaryInput = GetComponent<PlayerInput>().actions["Primary"].IsPressed();
     }
 
-    public void SpawnSpecialBoulder(int boulderIndex)
+    public void SpawnSpecialBoulder()
     {
-        _nextBoulderIndex = boulderIndex;
+        _nextBoulderIndex = UnityEngine.Random.Range(0, _boulderPrefabList.Count);
     }
 }

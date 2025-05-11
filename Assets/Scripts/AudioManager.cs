@@ -2,18 +2,20 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource _playMusic;
     public static AudioManager Instance;
+    private AudioSource _backgroundMusic;
+
     private void Start()
     {
         Instance = this;
+        _backgroundMusic = GetComponent<AudioSource>();
     }
     public void PlayMusic()
     {
-        _playMusic.Play();
+        _backgroundMusic.Play();
     }
     public void StopMusic()
     {
-        _playMusic.Stop();
+        _backgroundMusic.Stop();
     }
 }

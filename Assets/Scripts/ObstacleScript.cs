@@ -7,7 +7,7 @@ public class ObstacleScript : MonoBehaviour
     private FloorManager _floorManager;
 
     //stat vars
-    private readonly float _popupTime = 0f; //time it takes to get full size
+    private readonly float _popupTime = 0.25f; //time it takes to get full size
 
     //script vars
     private Vector3 _baseScale; //scale set at start
@@ -42,7 +42,7 @@ public class ObstacleScript : MonoBehaviour
         if (_isSpawning)
         {
             //get percentage of animation
-            float t = Mathf.Clamp01((_timeSinceSpawn / _popupTime) * (1/ _popupTime));
+            float t = Mathf.Clamp01((_timeSinceSpawn / _popupTime));//* (1 / _popupTime));
             transform.localScale = Vector3.Lerp(_baseScale * 0.01f, _baseScale, t);
 
             //if popup time is over, stop animation

@@ -9,8 +9,6 @@ public class Pickup : MonoBehaviour
     private readonly float _attractionForce = 300f;
     private readonly float _pickupDistance = 7.5f;
 
-    [SerializeField] int _powerupIndex;
-
     private void Awake()
     {
         if (_isForP1)
@@ -41,7 +39,7 @@ public class Pickup : MonoBehaviour
         }
         else if (isP1 == false && _isForP1 == false)
         {
-            _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulder(_powerupIndex);
+            _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulder();
             Destroy(this.gameObject);
         }
     }

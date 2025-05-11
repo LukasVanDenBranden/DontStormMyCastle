@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
     //stats
     private float _pickupsP1SpawnTime = 10; //in seconds
     private float _pickupsP2SpawnTime = 10; //in seconds
-    private float _obstacleSpawnTime = 0.75f; //in seconds
+    private float _obstacleSpawnTime = 0.5f; //in seconds
     private float _trackWidth = 20f;
 
     //script vars

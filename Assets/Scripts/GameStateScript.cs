@@ -54,6 +54,8 @@ public class GameStateScript : MonoBehaviour
         }
         else // Game Over
         {
+            GamepadManager.Instance.RumbleController(1, 0.3f, 0.05f);
+            GamepadManager.Instance.RumbleController(2, 0.3f, 0.05f);
             if (uiScript._restartButtonPressed == true)
             {
                 AudioManager.Instance.StopMusic();
@@ -63,4 +65,11 @@ public class GameStateScript : MonoBehaviour
         }
     }
 
+    private void OnGUI()
+    {
+        if (CurrentState == GameState.Playing)
+        {
+            uiScript.DrawHearts();
+        }
+    }
 }
