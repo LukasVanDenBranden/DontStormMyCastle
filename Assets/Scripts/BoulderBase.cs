@@ -8,14 +8,12 @@ public class BoulderBase : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-        Debug.Log("boulder hit player");
             P1Health.Instance.takeDamage(1);
             GamepadManager.Instance.RumbleController(1, 0.3f, 0.1f);
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
         else if(collision.gameObject.CompareTag("Pickup"))
         {
-            Debug.Log("boulder hit pickup");
             collision.gameObject.GetComponent<Pickup>().PlayerAttempsPickup(false);
         }
     }
