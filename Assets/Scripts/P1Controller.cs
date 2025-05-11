@@ -136,4 +136,8 @@ public class P1Controller : MonoBehaviour
         if (GetComponent<PlayerInput>().actions["Jump"].IsPressed())
             TryJump();
     }
+    public float GetDashCooldown()
+    {
+        return _timeSinceLastDash / _dashTimeout;
+    }
 }

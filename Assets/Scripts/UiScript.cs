@@ -11,6 +11,8 @@ public class UiScript : MonoBehaviour
     [SerializeField] Image startScreenImage;
     [SerializeField] Image _runnerwonGameOverScreen;
     [SerializeField] Image _defenderwonGameOverScreen;
+    [SerializeField] Image _SprintValueImage;
+    [SerializeField] Image _sprintIconImage;
     [SerializeField] Button _startButton;
     [SerializeField] Button _restartButton;
     [SerializeField] Image _hearthImage;
@@ -32,6 +34,26 @@ public class UiScript : MonoBehaviour
         _restartButton.onClick.AddListener(OnRestartButtonClick);
         P1Health.Instance.OnDamage += P1Health_OnDamage;
     }
+    private void Update()
+    {
+        UpdateSprintMeter();
+    }
+
+    private void UpdateSprintMeter()
+    {
+        float sprintCooldown = P1Controller.Instance.GetDashCooldown();
+        _SprintValueImage.fillAmount = sprintCooldown;
+        if (sprintCooldown >= 1)
+        {
+            _sprintIconImage.enabled = true;
+        }
+        else
+        {
+            _sprintIconImage.enabled = false;
+
+        }
+    }
+
     public void OnGameStart()
     {
         _restartButtonPressed = false;
