@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class SlowlingField : MonoBehaviour
+public class LavaPool : MonoBehaviour
 {
-    [SerializeField] private float speedreduction = 0.5f;
-    private float _timeuntilDeletion = 3f;
+    private float _timeuntilDeletion = 8f;
     private float _deletionTimer;
+    private FloorManager _floorManager;
+
     private void Start()
     {
         _deletionTimer = _timeuntilDeletion;
+        _floorManager = FindFirstObjectByType<FloorManager>();
     }
     private void Update()
     {
+        transform.position += Vector3.back *_floorManager.GetFloorSpeed() * Time.deltaTime;
         _deletionTimer -= Time.deltaTime;
         if (_deletionTimer <= 0)
         {
@@ -21,11 +24,7 @@ public class SlowlingField : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            P1Controller.Instance.SetMoveSpeedMultiplier(speedreduction);
+            P1Health.Instance.takeDamage(1);
         }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        P1Controller.Instance.SetMoveSpeedMultiplier(1f);
     }
 }
