@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BoulderBase : MonoBehaviour
 {
+    [SerializeField] private Sprite _boulderIcon;
     protected virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -18,4 +19,5 @@ public class BoulderBase : MonoBehaviour
             collision.gameObject.GetComponent<Pickup>().PlayerAttempsPickup(false);
         }
     }
+    public Sprite GetBoulderIcon() => _boulderIcon;
 }

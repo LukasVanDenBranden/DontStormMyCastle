@@ -149,4 +149,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1fa20b99223a844592a9cb5e70cf803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _boulderIcon: {fileID: 21300000, guid: 84271343f77d6494f888488d12d70e7d, type: 3}
   _slowingPlane: {fileID: 5042422962563239049, guid: b34e1196b8f9e3a4ba97e20a1e07d805, type: 3}

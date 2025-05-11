@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b88dee41ec2e2af4795054be26fd0869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _boulderIcon: {fileID: 21300000, guid: 3708ee7da8f80234799abbd78293297f, type: 3}
   _explosion: {fileID: 4786563342218813998, guid: dc9d13b20c652cf429df9ede3615a6dc, type: 3}
 --- !u!82 &7746097375009861000
 AudioSource:

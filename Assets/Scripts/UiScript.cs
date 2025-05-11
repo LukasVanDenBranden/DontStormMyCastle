@@ -8,7 +8,9 @@ using UnityEngine.UI;
 
 public class UiScript : MonoBehaviour
 {
-    [SerializeField] Image startScreenImage;
+    [SerializeField] Image _startScreenImage;
+    [SerializeField] Image _nextBoulderImage;
+    [SerializeField] Image _heldBoulderImage;
     [SerializeField] Image _runnerwonGameOverScreen;
     [SerializeField] Image _defenderwonGameOverScreen;
     [SerializeField] Image _SprintValueImage;
@@ -37,6 +39,8 @@ public class UiScript : MonoBehaviour
     private void Update()
     {
         UpdateSprintMeter();
+        _nextBoulderImage.sprite = P2Controller.instance.GetBoulderList()[P2Controller.instance.GetNextBoulderIndex()].GetComponent<BoulderBase>().GetBoulderIcon();
+        _heldBoulderImage.sprite = P2Controller.instance.GetBoulderList()[P2Controller.instance.GetHeltBoulderIndex()].GetComponent<BoulderBase>().GetBoulderIcon();
     }
 
     private void UpdateSprintMeter()
@@ -57,7 +61,7 @@ public class UiScript : MonoBehaviour
     public void OnGameStart()
     {
         _restartButtonPressed = false;
-        startScreenImage.gameObject.SetActive(false);
+        _startScreenImage.gameObject.SetActive(false);
         _startButton.gameObject.SetActive(false);
 
         _restartButton.gameObject.SetActive(false);

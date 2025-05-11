@@ -17,6 +17,7 @@ public class P2Controller : MonoBehaviour
     [SerializeField] private List<GameObject> _boulderPrefabList;
     [SerializeField] private Transform _aimingCirclePrefb;
     private List<GameObject> _boulderList;
+    public static P2Controller instance;
 
     //stats vars
     private readonly float _moveSpeed = 1000f;
@@ -41,9 +42,11 @@ public class P2Controller : MonoBehaviour
     private Transform _aimingCircle;
     private Vector3 _lastTrowDirection;
     private float _lastAngleUI;
+    private int _heldBoulderIndex;
 
     private void Awake()
     {
+        instance = this;
         _aimingCircle = Instantiate(_aimingCirclePrefb);
         _rb = GetComponent<Rigidbody>();
         _camera = GetComponentInChildren<Camera>();
@@ -67,7 +70,7 @@ public class P2Controller : MonoBehaviour
 
         //update percentage [0, 1] and is used multiple times in this script
         _chargePercentage = Mathf.MoveTowards(_chargePercentage, _primaryThrowForce / _primaryMaxThrowForce, 10 * Time.fixedDeltaTime);
-        GamepadManager.Instance.RumbleController(2, (_chargePercentage * _chargePercentage)/10, 0.1f);
+        GamepadManager.Instance.RumbleController(2, (_chargePercentage * _chargePercentage) / 10, 0.1f);
 
         UpdateCamera();
         UpdateUI();
@@ -227,6 +230,10 @@ public class P2Controller : MonoBehaviour
     {
         _rotateInput = value.Get<Vector2>();
     }
+    public void OnSecundary(InputValue value)
+    {
+        (_heldBoulderIndex, _nextBoulderIndex) = (_nextBoulderIndex, _heldBoulderIndex);
+    }
     private void UpdateButtonInputs()
     {
         //OnPrimary would only be called when pressed down, not when released, thus we need to check it in update
@@ -237,4 +244,7 @@ public class P2Controller : MonoBehaviour
     {
         _nextBoulderIndex = UnityEngine.Random.Range(0, _boulderPrefabList.Count);
     }
+    public int GetNextBoulderIndex() => _nextBoulderIndex;
+    public int GetHeltBoulderIndex() => _heldBoulderIndex;
+    public List<GameObject> GetBoulderList() => _boulderPrefabList;
 }

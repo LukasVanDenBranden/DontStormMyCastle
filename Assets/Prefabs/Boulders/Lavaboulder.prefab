@@ -149,4 +149,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7983df20fb0e29f4d94671482bcd7acb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _boulderIcon: {fileID: 21300000, guid: 5aaea3363a3bbd641b41b4f7c47ef028, type: 3}
   _lavaPool: {fileID: 8207877945098807060, guid: d6262f3c514a4bb4ebd5c539f1363f5d, type: 3}
