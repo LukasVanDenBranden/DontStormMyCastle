@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
@@ -11,11 +13,15 @@ public class UiScript : MonoBehaviour
     [SerializeField] Image _defenderwonGameOverScreen;
     [SerializeField] Button _startButton;
     [SerializeField] Button _restartButton;
+    [SerializeField] Image _hearthImage;
+    [SerializeField] Transform _hearthContainer;
     public bool _startButtonPressed;
     public bool _restartButtonPressed;
-
+    private List<Image> _hearthImageList;
     void Start()
     {
+        _hearthImageList = new List<Image>();
+
         _startButtonPressed = false;
         _restartButtonPressed = false;
 
@@ -24,9 +30,8 @@ public class UiScript : MonoBehaviour
         _defenderwonGameOverScreen.gameObject.SetActive(false);
         _startButton.onClick.AddListener(OnStartButtonClick);
         _restartButton.onClick.AddListener(OnRestartButtonClick);
+        P1Health.Instance.OnDamage += P1Health_OnDamage;
     }
-
-
     public void OnGameStart()
     {
         _restartButtonPressed = false;
@@ -38,6 +43,29 @@ public class UiScript : MonoBehaviour
         _defenderwonGameOverScreen.gameObject.SetActive(false);
         Locks.index = 0;
         GameStateScript._runnerwon = false;
+        UpdateHearths();
+    }
+    private void P1Health_OnDamage(object sender, EventArgs empty)
+    {
+        UpdateHearths();
+    }
+    private void DestroyhearthImages()
+    {
+        foreach (Image transform in _hearthImageList)
+        {
+            Destroy(transform.gameObject);
+        }
+        _hearthImageList.Clear();
+    }
+    private void UpdateHearths()
+    {
+        DestroyhearthImages();
+
+        for (int i = 0; i < P1Health.Instance.GetHearths(); i++)
+        {
+            Image hearthImnstance = Instantiate(_hearthImage, _hearthContainer);
+            _hearthImageList.Add(hearthImnstance);
+        }
     }
 
     public void ActivateGameOverScreen()
@@ -45,8 +73,9 @@ public class UiScript : MonoBehaviour
         _restartButton.gameObject.SetActive(true);
         _runnerwonGameOverScreen.gameObject.SetActive(true);
         _defenderwonGameOverScreen.gameObject.SetActive(true);
+        _hearthImageList.Clear();
     }
-    
+
 
     public void OnStartButtonClick()
     {

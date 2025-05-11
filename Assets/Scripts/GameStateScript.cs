@@ -37,7 +37,7 @@ public class GameStateScript : MonoBehaviour
         else if (CurrentState == GameState.Playing) // while playing
         {
 
-            if (FindFirstObjectByType<PlayerManager>().P1Health <= 0 || Runner.transform.position.y <= -20)
+            if (P1Health.Instance.GetHearths()<= 0 || Runner.transform.position.y <= -20)
             {
                 Time.timeScale = 0;
                 uiScript.ActivateGameOverScreen();

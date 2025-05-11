@@ -7,8 +7,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject _p1Prefab;
     [SerializeField] private GameObject _p2Prefab;
 
-    [HideInInspector] public int P1Health = 5;
-
     private void Awake()
     {
         Time.timeScale = 0;

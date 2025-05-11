@@ -23,7 +23,7 @@ public class ExplosionScript : MonoBehaviour
     {
         if (!_hasHit)
         {
-            P1Health.HeartsRemaining--;
+            P1Health.Instance.takeDamage(1);
         }
         _hasHit = true;
     }
