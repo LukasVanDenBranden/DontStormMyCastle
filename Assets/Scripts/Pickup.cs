@@ -39,15 +39,25 @@ public class Pickup : MonoBehaviour
 
     public void PlayerAttempsPickup(bool isP1)
     {
-        if (isP1 == true && _isForP1 == true)
+        if(isP1)
         {
-            _targetTransform.gameObject.GetComponent<P1Controller>().PickUpKey();
-            Destroy(this.gameObject);
+            if(_isForP1)
+            {
+                _targetTransform.gameObject.GetComponent<P1Controller>().PickUpKey();
+                Destroy(gameObject);
+            }
         }
-        else if (isP1 == false && _isForP1 == false)
+        else
         {
-            _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulder();
-            Destroy(this.gameObject);
+            if (_isForP1)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulder();
+                Destroy(gameObject);
+            }
         }
     }
 }

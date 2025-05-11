@@ -11,7 +11,6 @@ public class BombBoulder : BoulderBase
     private void Start()
     {
         _fuseTimer = _fuseDuration;
-        Debug.Log("special boulder");
     }
     private void Update()
     {
