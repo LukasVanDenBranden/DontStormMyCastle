@@ -64,12 +64,4 @@ public class GameStateScript : MonoBehaviour
             }
         }
     }
-
-    private void OnGUI()
-    {
-        if (CurrentState == GameState.Playing)
-        {
-            uiScript.DrawHearts();
-        }
-    }
 }
