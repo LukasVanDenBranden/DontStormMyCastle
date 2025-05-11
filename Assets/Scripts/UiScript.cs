@@ -110,4 +110,8 @@ public class UiScript : MonoBehaviour
     {
         _restartButtonPressed = true;
     }
+    private void OnDestroy()
+    {
+        UpdateHearths();
+    }
 }
