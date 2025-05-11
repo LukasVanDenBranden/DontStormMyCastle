@@ -15,7 +15,6 @@ public class GamepadManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
     }
 
     //duration is in seconds
