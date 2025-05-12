@@ -1,11 +1,15 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class GameStateScript : MonoBehaviour
 {
     private UiScript uiScript;
     public static GameStateScript Instance;
     private GameObject Runner;
+    [SerializeField] private EventSystem _eventSystem;
+    [SerializeField] private Button _restartButton;
 
     public bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
     public enum GameState
@@ -43,6 +47,7 @@ public class GameStateScript : MonoBehaviour
                 Time.timeScale = 0;
                 uiScript.ActivateGameOverScreen();
                 CurrentState = GameState.GameOver;
+                _eventSystem.SetSelectedGameObject(_restartButton.gameObject);
 
                 //when game over vibrate controllers
                 GamepadManager.Instance.RumbleController(1, 0.3f, 0.05f);
