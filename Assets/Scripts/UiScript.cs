@@ -49,11 +49,11 @@ public class UiScript : MonoBehaviour
         _SprintValueImage.fillAmount = sprintCooldown;
         if (sprintCooldown >= 1)
         {
-            _sprintIconImage.enabled = true;
+            _SprintValueImage.color = UnityEngine.Color.green;
         }
         else
         {
-            _sprintIconImage.enabled = false;
+            _SprintValueImage.color = UnityEngine.Color.red;
 
         }
     }
