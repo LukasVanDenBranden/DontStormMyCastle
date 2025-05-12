@@ -6,8 +6,9 @@ public class SlowingBoulder : BoulderBase
     private bool _haslanded;
     private Vector3 _lastPlacedSlowingField;
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         if (!_haslanded) return;
         float distance = (transform.position - _lastPlacedSlowingField).magnitude;
         if (distance > _slowingPlane.transform.localScale.x / 2)

@@ -22,9 +22,9 @@ public class P2Controller : MonoBehaviour
     //stats vars
     private readonly float _moveSpeed = 1000f;
     private readonly float _primaryMaxThrowForce = 30f;
-    private readonly float _primaryThrowTime = 3f; //time it takes to reach max throwing force in seconds
+    private readonly float _primaryThrowTime = 2f; //time it takes to reach max throwing force in seconds
     private readonly float _boulderDespawnYLevel = -10f;
-    private readonly float _boulderCooldown = 0.75f; //cooldown until next boulder can be charged
+    private readonly float _boulderCooldown = 0.5f; //cooldown until next boulder can be charged
     private readonly float _cameraDollyZoomStrength = 5f;
     private readonly int _chargeSpeedMultiplier = 2;
 
