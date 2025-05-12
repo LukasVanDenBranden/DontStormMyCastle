@@ -3,13 +3,12 @@ using UnityEngine;
 public class SlowingBoulder : BoulderBase
 {
     [SerializeField] private GameObject _slowingPlane;
-    private bool _haslanded;
     private Vector3 _lastPlacedSlowingField;
 
     protected override void Update()
     {
         base.Update();
-        if (!_haslanded) return;
+        if (!_hasLanded) return;
         float distance = (transform.position - _lastPlacedSlowingField).magnitude;
         if (distance > _slowingPlane.transform.localScale.x / 2)
         {
@@ -19,8 +18,7 @@ public class SlowingBoulder : BoulderBase
     protected override void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);
-        if (_haslanded) return;
-        _haslanded = true;
+        if (_hasLanded) return;
         CreateNewSlowingField();
     }
 
