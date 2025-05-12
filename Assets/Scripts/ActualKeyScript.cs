@@ -19,7 +19,7 @@ public class ActualKeyScript : MonoBehaviour
     {
         transform.position += _floorManager.GetFloorSpeed() * Time.deltaTime * -Vector3.forward;
 
-        if (transform.position.z >= 110) Destroy(gameObject);
+        if (transform.position.z <= -80) Destroy(gameObject);
     }
 
 }
