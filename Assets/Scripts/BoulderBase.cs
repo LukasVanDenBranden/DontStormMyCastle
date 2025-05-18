@@ -17,7 +17,7 @@ public class BoulderBase : MonoBehaviour
         if (!_hasLanded) return;
 
         if (_rb.linearVelocity.z < _floorManager.GetFloorSpeed())
-            _rb.AddForce(Vector3.back * _floorManager.GetFloorSpeed(), ForceMode.Acceleration);
+            _rb.AddForce(Vector3.back * _floorManager.GetFloorSpeed() /5, ForceMode.Acceleration);
     }
     protected virtual void OnCollisionEnter(Collision collision)
     {

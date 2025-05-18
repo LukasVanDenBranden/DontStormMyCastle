@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4990053293342028105}
   - component: {fileID: 4132681837833624795}
   - component: {fileID: 1519108979212005187}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 1508413630208718529}
   - component: {fileID: 3128925734758874613}
   - component: {fileID: 2836542138452710047}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

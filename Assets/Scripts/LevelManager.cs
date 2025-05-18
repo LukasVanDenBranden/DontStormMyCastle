@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
     private float _pickupsP2SpawnTime = 7.5f; //in seconds
     private float _obstacleSpawnTime = 0.5f; //in seconds
     private float _keySpawnTime = 5f; //in seconds
-    private float _trackWidth = 20f;
+    private float _trackWidth = 16f;
 
     //script vars
     private float _pickupP1Timer = 5;
@@ -24,9 +24,10 @@ public class LevelManager : MonoBehaviour
     private float _keySpawnTimer = 5f;
     private Vector3 _pickupP2Place = new Vector3(0, 1, -25);
     private float _obstacleSpawnZ = 50f;
-
+    private Transform _pickUpSpawnpoint;
     private void Start()
     {
+        _pickUpSpawnpoint = GameObject.Find("PickUpSpawnPoint").transform;
         _floorManager = FindFirstObjectByType<FloorManager>();
     }
 
@@ -47,6 +48,7 @@ public class LevelManager : MonoBehaviour
 
         if (_pickupP2Timer < 0)
         {
+            _pickupP2Place = _pickUpSpawnpoint.position;
             _pickupP2Place.x = Random.Range(-_trackWidth, _trackWidth);
             Instantiate(_pickupPrefabsP2[Random.Range(0, _pickupPrefabsP2.Count)], _pickupP2Place, Quaternion.identity);
             _pickupP2Timer += _pickupsP2SpawnTime - _floorManager.GetFloorSpeed()/10;

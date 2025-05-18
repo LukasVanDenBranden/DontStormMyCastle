@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7312365458737068230}
   - component: {fileID: -8088492939066034361}
   - component: {fileID: 5488815993298596754}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SlowingBoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

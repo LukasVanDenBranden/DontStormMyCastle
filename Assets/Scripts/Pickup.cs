@@ -19,23 +19,26 @@ public class Pickup : MonoBehaviour
         else
         {
             _targetTransform = FindFirstObjectByType<P2Controller>().transform;
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll; //freeze
+            //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll; //freeze
         }
     }
 
     private void FixedUpdate()
     {
         //pullForce = distance * -1 clamped [0, pickupdistance] then * _attractionForce
-        float pullForce = Mathf.Clamp01((_pickupDistance - Vector3.Distance(_targetTransform.position, transform.position)) / _pickupDistance) * _attractionForce;
-        Vector3 pullDirection = (_targetTransform.position - transform.position).normalized;
+        //float pullForce = Mathf.Clamp01((_pickupDistance - Vector3.Distance(_targetTransform.position, transform.position)) / _pickupDistance) * _attractionForce;
+        //Vector3 pullDirection = (_targetTransform.position - transform.position).normalized;
 
-        GetComponent<Rigidbody>().AddForce(pullDirection * pullForce);
+        //GetComponent<Rigidbody>().AddForce(pullDirection * pullForce);
 
         //if close enough pick up
         if (Vector3.Distance(_targetTransform.position, transform.position) < 2.5f)
             PlayerAttempsPickup(true);
     }
-
+    private void OnTriggerEnter(Collider other)
+    {
+        PlayerAttempsPickup(_isForP1);
+    }
 
     public void PlayerAttempsPickup(bool isP1)
     {
