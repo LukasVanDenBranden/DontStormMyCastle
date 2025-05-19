@@ -14,13 +14,13 @@ public class LevelManager : MonoBehaviour
     //stats
     private float _pickupsP2SpawnTime = 7.5f; //in seconds
     private float _obstacleSpawnTime = 0.5f; //in seconds
-    private float _keySpawnTime = 5f; //in seconds
+    public float _keySpawnTime = 5f; //in seconds
     private float _trackWidth = 16f;
 
     //script vars
     private float _pickupP1Timer = 5;
     private float _pickupP2Timer = 5;
-    private float _obstacleTimer = 0.5f;
+    [SerializeField]private float _obstacleTimer = 0.5f;
     private float _keySpawnTimer = 5f;
     private Vector3 _pickupP2Place = new Vector3(0, 1, -25);
     private float _obstacleSpawnZ = 50f;

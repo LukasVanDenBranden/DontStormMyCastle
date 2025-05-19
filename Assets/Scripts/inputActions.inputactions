@@ -134,7 +134,7 @@
                 {
                     "name": "",
                     "id": "7b2c3f0a-81f7-4404-a984-da7017a721a5",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<XInputController>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -55,7 +55,9 @@ MonoBehaviour:
   - {fileID: 502652657922175749, guid: 8f5f432f107056d4cae57e24a76d0e5f, type: 3}
   - {fileID: 502652657922175749, guid: 447d2e80f869c0445841d84366563970, type: 3}
   - {fileID: 502652657922175749, guid: 75404d657b4f6b8429b7e075ac4990e3, type: 3}
-  _aimingArrrowPrefb: {fileID: 0}
+  _primaryMaxThrowForce: 100
+  _boulderCooldown: 0.8
+  Sensitivity: 100
 --- !u!54 &8679411339773428704
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -64,7 +66,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1317423624422183457}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.8
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

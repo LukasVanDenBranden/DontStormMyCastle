@@ -14,18 +14,19 @@ public class P2Controller : MonoBehaviour
     private Camera _camera;
     private RectTransform _primaryChargeUI;
     [SerializeField] private List<GameObject> _boulderPrefabList;
-    [SerializeField] private Transform _aimingArrrowPrefb;
+    private Transform _aimingArrrowPrefb;
     private List<GameObject> _boulderList;
     public static P2Controller instance;
+    [SerializeField]private float _primaryMaxThrowForce = 30f;
 
     //stats vars
     private readonly float _moveSpeed = 1000f;
-    private readonly float _primaryMaxThrowForce = 30f;
     private readonly float _primaryThrowTime = 2f; //time it takes to reach max throwing force in seconds
     private readonly float _boulderDespawnYLevel = -10f;
-    private readonly float _boulderCooldown = 1f; //cooldown until next boulder can be charged
+    [SerializeField]private  float _boulderCooldown = 1f; //cooldown until next boulder can be charged
     private readonly float _cameraDollyZoomStrength = 5f;
     private readonly int _chargeSpeedMultiplier = 2;
+    public float Sensitivity = 100;
 
     //script vars
     private Vector2 moveInput;
@@ -114,6 +115,7 @@ public class P2Controller : MonoBehaviour
         {
             _currentThrowingBoulder = Instantiate(_boulderPrefabList[_nextBoulderIndex], boulderPos, Quaternion.identity); //spawn boulder
             _currentThrowingBoulder.GetComponent<MeshRenderer>().enabled = false;
+            _trowRotation.y = 0;
             _nextBoulderIndex = 0; //reset so next boulder is just a normal boulder (unless changed)
         }
         else
@@ -130,7 +132,7 @@ public class P2Controller : MonoBehaviour
     private Vector3 GetInPutDirection()
     {
         // Accumulate yaw from horizontal input
-        _currentRotationY += _rotateInput.x * Time.deltaTime * 100f;  // 100f is sensitivity
+        _currentRotationY += _rotateInput.normalized.x * Time.deltaTime * Sensitivity;  // 100f is sensitivity
         _currentRotationY = Mathf.Clamp(_currentRotationY, -90f, 90f);       // Clamp between 0 and 180 degrees
 
         // Create rotation from yaw
