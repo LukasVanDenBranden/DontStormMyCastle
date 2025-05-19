@@ -68,6 +68,12 @@ public class UiScript : MonoBehaviour
         _runnerwonGameOverScreen.gameObject.SetActive(false);
         _defenderwonGameOverScreen.gameObject.SetActive(false);
         Locks.index = 0;
+
+        FloorManager._floorSpeed = 15f; //this code sucks absolute ass, whoever wrote this .cs script should stop and start watching some basic fucking unity tutorials.
+        //why is the reset level in UiScript and not in LevelManager, and why are the buttons used with addlistener
+        //this script should be AT LEAST 1/3th its size
+        //also there should only be 2 serialized fields 1 main menu (all buttons and ui have this as parent)
+
         UpdateHearths();
     }
     private void P1Health_OnDamage(object sender, EventArgs empty)
