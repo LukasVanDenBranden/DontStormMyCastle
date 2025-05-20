@@ -185,7 +185,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   _walkSpeedSideways: 1000
-  _walkSpeedForward: 500
+  _walkSpeedForward: 800
   _dashTimeout: 2
   _dashVelocity: 65
 --- !u!54 &9151144146147290980

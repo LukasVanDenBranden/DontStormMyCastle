@@ -57,7 +57,7 @@ MonoBehaviour:
   - {fileID: 502652657922175749, guid: 75404d657b4f6b8429b7e075ac4990e3, type: 3}
   _primaryMaxThrowForce: 100
   _boulderCooldown: 0.8
-  Sensitivity: 100
+  Sensitivity: 50
 --- !u!54 &8679411339773428704
 Rigidbody:
   m_ObjectHideFlags: 0
