@@ -4,12 +4,13 @@ public class FloorManager : MonoBehaviour
 {
     //outside connections
     [SerializeField] private GameObject _tilePrefab;
+    [SerializeField] private float _maxFloorSpeed = 45;
 
     //stats vars
     private readonly int _trackLength = 110; //total length of the moving floor
     private readonly int _trackStartX = -50; //track will go to x -50
     public static float _floorSpeed = 15f;
-
+    
     private int _tileWidth = 5;
 
     //script vars
