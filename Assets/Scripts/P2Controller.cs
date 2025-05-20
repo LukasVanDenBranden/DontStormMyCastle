@@ -14,16 +14,15 @@ public class P2Controller : MonoBehaviour
     private Camera _camera;
     private RectTransform _primaryChargeUI;
     [SerializeField] private List<GameObject> _boulderPrefabList;
-    private Transform _aimingArrrowPrefb;
     private List<GameObject> _boulderList;
     public static P2Controller instance;
-    [SerializeField]private float _primaryMaxThrowForce = 30f;
+    [SerializeField] private float _primaryMaxThrowForce = 30f;
 
     //stats vars
     private readonly float _moveSpeed = 1000f;
     private readonly float _primaryThrowTime = 2f; //time it takes to reach max throwing force in seconds
     private readonly float _boulderDespawnYLevel = -10f;
-    [SerializeField]private  float _boulderCooldown = 1f; //cooldown until next boulder can be charged
+    [SerializeField] private float _boulderCooldown = 1f; //cooldown until next boulder can be charged
     private readonly float _cameraDollyZoomStrength = 5f;
     private readonly int _chargeSpeedMultiplier = 2;
     public float Sensitivity = 100;
@@ -43,6 +42,9 @@ public class P2Controller : MonoBehaviour
     private float _chargePercentage = 0f; //[0, 1] to how much is charged AND goes slowely down using cooldown
     private Transform _aimingArrow;
     private int _heldBoulderIndex;
+    private float _lastTrowAngle;
+    private Vector3 _lastTrowDirection;
+    private Quaternion _lastTrowRotation;
 
     private void Awake()
     {
@@ -82,7 +84,7 @@ public class P2Controller : MonoBehaviour
         _rb.linearVelocity = new Vector3(-moveInput.x * _moveSpeed * Time.fixedDeltaTime, 0, 0);
         float x = Mathf.Clamp(transform.position.x, -18, 18);
         _aimingArrow.position = new Vector3(x, _aimingArrow.position.y, _aimingArrow.position.z);
-        transform.position = new Vector3(x, transform.position.y,transform.position.z);
+        transform.position = new Vector3(x, transform.position.y, transform.position.z);
     }
     private void UpdatePrimary()
     {
@@ -109,7 +111,7 @@ public class P2Controller : MonoBehaviour
 
         //in front of player with the magic number being the distance from player
         Vector3 boulderPos = transform.position + -transform.forward.normalized * 7.5f;
-        boulderPos.y = 4.1f; //4 is half of the boulders height
+        boulderPos.y = 4.01f; //4 is half of the boulders height
         //if no boulder (first loop when button is pressed) spawn boulder, otherwise update its position
         if (_currentThrowingBoulder == null)
         {
@@ -131,17 +133,23 @@ public class P2Controller : MonoBehaviour
 
     private Vector3 GetInPutDirection()
     {
-        // Accumulate yaw from horizontal input
-        _currentRotationY += _rotateInput.normalized.x * Time.deltaTime * Sensitivity;  // 100f is sensitivity
-        _currentRotationY = Mathf.Clamp(_currentRotationY, -90f, 90f);       // Clamp between 0 and 180 degrees
+        Vector3 forward = transform.forward;
+        Vector3 right = transform.right;
+        Vector3 trowDirection = forward * _rotateInput.y + right * _rotateInput.x;
 
-        // Create rotation from yaw
-        _trowRotation = Quaternion.Euler(0f, _currentRotationY, 0f);
+        if (_rotateInput.magnitude > 0.4f) // deadzone
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(trowDirection.normalized);
+            float rotationy = targetRotation.eulerAngles.y - 180;
+            
+            float clamp = Mathf.Clamp(rotationy, -70, 70) + 180;
+            targetRotation = Quaternion.Euler(0, clamp, 0);
+            _lastTrowRotation = Quaternion.RotateTowards(_lastTrowRotation, targetRotation, Sensitivity * Time.deltaTime);
+        }
 
-        // Optional: update a visual arrow (like a throw direction indicator)
-        _aimingArrow.rotation = Quaternion.Euler(90f, _currentRotationY, 0f);
-        return _trowRotation * Vector3.back;
-
+        _aimingArrow.rotation = _lastTrowRotation;
+        _lastTrowDirection = _lastTrowRotation * Vector3.forward;
+        return _lastTrowDirection;
     }
 
     private void UpdateCamera()
