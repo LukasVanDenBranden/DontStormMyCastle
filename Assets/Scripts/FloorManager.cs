@@ -17,6 +17,7 @@ public class FloorManager : MonoBehaviour
 
     private void Awake()
     {
+        _floorSpeed = 15;
         _floorTiles = new GameObject[_trackLength/ _tileWidth]; //floor tiles are 10 width, thus amount of tiles is 1 tenth the length
     }
 
@@ -35,6 +36,7 @@ public class FloorManager : MonoBehaviour
         UpdateFloor();
         //make floor faster
         _floorSpeed += Time.fixedDeltaTime / 10;
+        _floorSpeed = Mathf.Clamp(_floorSpeed, 0, _maxFloorSpeed);
     }
 
     void UpdateFloor()

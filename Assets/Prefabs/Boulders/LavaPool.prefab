@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7571265148812914398}
   - component: {fileID: 8672883605254242758}
   - component: {fileID: 6499933686262778439}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LavaPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.01, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalScale: {x: 15, y: 15, z: 15}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}

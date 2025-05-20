@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -8088492939066034361}
   - component: {fileID: 683004977775273652}
   - component: {fileID: 7746097375009861000}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BombBoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6475090075143372321}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 2688897293600576992}
   - component: {fileID: 8024826218389100013}
   - component: {fileID: 121251982036414089}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fuse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5095,7 +5095,7 @@ GameObject:
   - component: {fileID: 7215879424507346651}
   - component: {fileID: 6272199211888926149}
   - component: {fileID: 6550326058339199737}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

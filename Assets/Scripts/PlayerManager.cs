@@ -14,6 +14,7 @@ public class PlayerManager : MonoBehaviour
         Time.timeScale = 0;
 
         var gamepads = Gamepad.all; //get all controllers
+        Debug.Log(gamepads[0].description);
         var keyboard = Keyboard.current; //get keyboard
 
         //players need to spawn this way cuz of the connection to their respective controller

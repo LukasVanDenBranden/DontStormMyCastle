@@ -13,50 +13,52 @@ public class P2Controller : MonoBehaviour
     private Rigidbody _rb;
     private Camera _camera;
     private RectTransform _primaryChargeUI;
-    private RectTransform _trowDirectionUI;
     [SerializeField] private List<GameObject> _boulderPrefabList;
-    [SerializeField] private Transform _aimingCirclePrefb;
     private List<GameObject> _boulderList;
     public static P2Controller instance;
+    [SerializeField] private float _primaryMaxThrowForce = 30f;
 
     //stats vars
     private readonly float _moveSpeed = 1000f;
-    private readonly float _primaryMaxThrowForce = 30f;
     private readonly float _primaryThrowTime = 2f; //time it takes to reach max throwing force in seconds
     private readonly float _boulderDespawnYLevel = -10f;
-    private readonly float _boulderCooldown = 0.5f; //cooldown until next boulder can be charged
+    [SerializeField] private float _boulderCooldown = 1f; //cooldown until next boulder can be charged
     private readonly float _cameraDollyZoomStrength = 5f;
     private readonly int _chargeSpeedMultiplier = 2;
+    public float Sensitivity = 100;
 
     //script vars
     private Vector2 moveInput;
     private Vector2 _rotateInput;
+    private Quaternion _trowRotation;
     private bool _primaryInput = false;
     private float _primaryThrowForce = 0f;
+    private float _currentRotationY = 0f;
     private GameObject _currentThrowingBoulder;
     private int _nextBoulderIndex = 0; //index of prefab list
     private float _boulderCooldownTimer;
     private float _cameraDefaultDistance;
     private float _cameraDefaultFOV;
     private float _chargePercentage = 0f; //[0, 1] to how much is charged AND goes slowely down using cooldown
-    private Transform _aimingCircle;
-    private Vector3 _lastTrowDirection;
-    private float _lastAngleUI;
+    private Transform _aimingArrow;
     private int _heldBoulderIndex;
+    private float _lastTrowAngle;
+    private Vector3 _lastTrowDirection;
+    private Quaternion _lastTrowRotation;
 
     private void Awake()
     {
         instance = this;
-        _aimingCircle = Instantiate(_aimingCirclePrefb);
+        _aimingArrow = GameObject.Find("AimingArrow").transform;
         _rb = GetComponent<Rigidbody>();
         _camera = GetComponentInChildren<Camera>();
         _primaryChargeUI = GameObject.Find("PrimaryForceCharge").GetComponent<RectTransform>();
-        _trowDirectionUI = GameObject.Find("TrowDirectionRotationPivot").GetComponent<RectTransform>();
         _boulderList = new List<GameObject>();
     }
 
     private void Start()
     {
+        _currentRotationY = -transform.forward.y;
         _boulderCooldownTimer = _boulderCooldown;
         _cameraDefaultDistance = _camera.transform.localPosition.z;
         _cameraDefaultFOV = _camera.fieldOfView;
@@ -72,7 +74,7 @@ public class P2Controller : MonoBehaviour
         _chargePercentage = Mathf.MoveTowards(_chargePercentage, _primaryThrowForce / _primaryMaxThrowForce, 10 * Time.fixedDeltaTime);
         GamepadManager.Instance.RumbleController(2, (_chargePercentage * _chargePercentage) / 10, 0.1f);
 
-        UpdateCamera();
+        //UpdateCamera();
         UpdateUI();
         CleanUpBoulders();
     }
@@ -80,13 +82,16 @@ public class P2Controller : MonoBehaviour
     {
         //add forces by input
         _rb.linearVelocity = new Vector3(-moveInput.x * _moveSpeed * Time.fixedDeltaTime, 0, 0);
+        float x = Mathf.Clamp(transform.position.x, -18, 18);
+        _aimingArrow.position = new Vector3(x, _aimingArrow.position.y, _aimingArrow.position.z);
+        transform.position = new Vector3(x, transform.position.y, transform.position.z);
     }
     private void UpdatePrimary()
     {
         _boulderCooldownTimer -= Time.deltaTime;
+        Vector3 throwDirection = GetInPutDirection();
         if (_boulderCooldownTimer >= 0) return;
 
-        Vector3 throwDirection = GetInPutDirection();
 
 
         if (!_primaryInput)
@@ -105,13 +110,14 @@ public class P2Controller : MonoBehaviour
         }
 
         //in front of player with the magic number being the distance from player
-        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
-
+        Vector3 boulderPos = transform.position + -transform.forward.normalized * 7.5f;
+        boulderPos.y = 4.01f; //4 is half of the boulders height
         //if no boulder (first loop when button is pressed) spawn boulder, otherwise update its position
         if (_currentThrowingBoulder == null)
         {
             _currentThrowingBoulder = Instantiate(_boulderPrefabList[_nextBoulderIndex], boulderPos, Quaternion.identity); //spawn boulder
             _currentThrowingBoulder.GetComponent<MeshRenderer>().enabled = false;
+            _trowRotation.y = 0;
             _nextBoulderIndex = 0; //reset so next boulder is just a normal boulder (unless changed)
         }
         else
@@ -127,43 +133,23 @@ public class P2Controller : MonoBehaviour
 
     private Vector3 GetInPutDirection()
     {
-        //this is ugly as fuck, i know i'll fix it later. kwil gewoon voor study night zo veel mogelijk hebben
-        float angleUI;
-        if (_rotateInput == Vector2.zero)
-        {
-            angleUI = _lastAngleUI;
-        }
-        else
-        {
-            Vector2 rotationInpupt = _rotateInput.normalized;
-            angleUI = Mathf.Atan2(rotationInpupt.y, rotationInpupt.x); //calculate the z rotation of ui pivot based on the vector2 input
-            angleUI *= Mathf.Rad2Deg;
-            if (angleUI < -90)
-            {
-                angleUI = 180;
-            }
-        }
-        angleUI = Mathf.Clamp(angleUI, 0, 180);
-        Vector2 direction = new Vector2(Mathf.Cos(angleUI * Mathf.Deg2Rad), Mathf.Sin(angleUI * Mathf.Deg2Rad));
-        _lastAngleUI = angleUI;
-        _trowDirectionUI.rotation = Quaternion.Euler(0, 0, angleUI);
-
-        Vector3 boulderPos = transform.position + transform.forward.normalized * 7.5f;
-
-        if (_rotateInput == Vector2.zero)
-        {
-            return _lastTrowDirection;
-        }
-        Vector2 input = direction.normalized;
         Vector3 forward = transform.forward;
         Vector3 right = transform.right;
-        Vector3 trowDriection = forward * input.y + right * input.x;  //trow the boulder in the direction where the right stick is pointed
+        Vector3 trowDirection = forward * _rotateInput.y + right * _rotateInput.x;
 
-        _aimingCircle.position = PredictLandingPoint(boulderPos, trowDriection * _primaryThrowForce, 0);
-        _lastTrowDirection = trowDriection;
-        return trowDriection;
+        if (_rotateInput.magnitude > 0.4f) // deadzone
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(trowDirection.normalized);
+            float rotationy = targetRotation.eulerAngles.y - 180;
+            
+            float clamp = Mathf.Clamp(rotationy, -70, 70) + 180;
+            targetRotation = Quaternion.Euler(0, clamp, 0);
+            _lastTrowRotation = Quaternion.RotateTowards(_lastTrowRotation, targetRotation, Sensitivity * Time.deltaTime);
+        }
 
-
+        _aimingArrow.rotation = _lastTrowRotation;
+        _lastTrowDirection = _lastTrowRotation * Vector3.forward;
+        return _lastTrowDirection;
     }
 
     private void UpdateCamera()
@@ -242,7 +228,7 @@ public class P2Controller : MonoBehaviour
 
     public void SpawnSpecialBoulder()
     {
-        _nextBoulderIndex = UnityEngine.Random.Range(0, _boulderPrefabList.Count);
+        _nextBoulderIndex = UnityEngine.Random.Range(1, _boulderPrefabList.Count);
     }
     public int GetNextBoulderIndex() => _nextBoulderIndex;
     public int GetHeltBoulderIndex() => _heldBoulderIndex;
