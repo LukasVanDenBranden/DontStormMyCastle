@@ -42,6 +42,7 @@ public class LevelManager : MonoBehaviour
 
     private void PlacePickups()
     {
+        if (GameStateScript.Instance.StartTimer > 0) return;
         //place pickups for P2
         _pickupP1Timer -= Time.fixedDeltaTime;
         _pickupP2Timer -= Time.fixedDeltaTime;
@@ -57,6 +58,7 @@ public class LevelManager : MonoBehaviour
 
     private void PlaceObstacles()
     {
+        if (GameStateScript.Instance.StartTimer > 0) return;
         _obstacleTimer -= Time.fixedDeltaTime;
 
         if (_obstacleTimer < 0)
@@ -69,6 +71,8 @@ public class LevelManager : MonoBehaviour
 
     private void PlaceKeys()
     {
+        if (GameStateScript.Instance.StartTimer > 0) return;
+
         _keySpawnTimer -= Time.fixedDeltaTime;
 
         if (_keySpawnTimer < 0)

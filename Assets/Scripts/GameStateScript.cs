@@ -11,7 +11,13 @@ public class GameStateScript : MonoBehaviour
     [SerializeField] private EventSystem _eventSystem;
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _startButton;
-
+    [SerializeField] public float StartTimeDuration = 6;
+    [SerializeField] private AudioSource _countdown;
+    [SerializeField] private Image _oneImage;
+    [SerializeField] private Image _twoImage;
+    [SerializeField] private Image _treeImage;
+    [SerializeField] private Image _goImage;
+    public float StartTimer;
     public bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
     public enum GameState
     {
@@ -20,8 +26,12 @@ public class GameStateScript : MonoBehaviour
         GameOver
     }
     private GameState CurrentState;
+    private bool _countdownHasStarted;
+    private bool _countdownHasEnded;
+
     void Start()
     {
+        StartTimer = StartTimeDuration;
         Instance = this;
         uiScript = FindFirstObjectByType<UiScript>();
         CurrentState = GameState.TitelScreen;
@@ -30,6 +40,7 @@ public class GameStateScript : MonoBehaviour
 
     private void Update()
     {
+        StartCountDown();
         if (CurrentState == GameState.TitelScreen) // on start
         {
             _eventSystem.SetSelectedGameObject(_startButton.gameObject);
@@ -77,6 +88,42 @@ public class GameStateScript : MonoBehaviour
             }
         }
     }
+
+    private void StartCountDown()
+    {
+        if (_countdownHasEnded) return;
+        StartTimer -= Time.deltaTime;
+        if (StartTimer < 4 && !_countdownHasStarted)
+        {
+            _countdownHasStarted = true;
+            _countdown.Play();
+        }
+        if (StartTimer <= 4 && StartTimer > 3)
+        {
+            _treeImage.enabled = true;
+        }
+        if (StartTimer <= 3 && StartTimer > 2)
+        {
+            _treeImage.enabled = false;
+            _twoImage.enabled = true;
+        }
+        if (StartTimer <= 2 && StartTimer > 1)
+        {
+            _twoImage.enabled = false;
+            _oneImage.enabled = true;
+        }
+        if (StartTimer <= 1 && StartTimer > 0)
+        {
+            _oneImage.enabled = false;
+            _goImage.enabled = true;
+        }
+        if (StartTimer < 0)
+        {
+            _goImage.enabled = false;
+            _countdownHasEnded = true;
+        }
+    }
+
     public GameState GetGameState() => CurrentState;
     public bool IsRunnerWinner() => _runnerwon;
 }

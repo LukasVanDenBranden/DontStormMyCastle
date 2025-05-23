@@ -37,12 +37,11 @@ public class P1Controller : MonoBehaviour
         _camera = GetComponentInChildren<Camera>();
         _floorManager = FindFirstObjectByType<FloorManager>();
         Camera camera = GetComponent<Camera>();
-        UniversalAdditionalCameraData cameraData = _camera.GetUniversalAdditionalCameraData();
-        cameraData.renderPostProcessing = true;
     }
 
     private void FixedUpdate()
     {
+        if(GameStateScript.Instance.StartTimer > 0 )return;
         _timeSinceLastDash += Time.fixedDeltaTime;
         UpdateButtonInputs();
         UpdateMovement();

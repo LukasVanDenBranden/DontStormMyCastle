@@ -68,6 +68,8 @@ public class P2Controller : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (GameStateScript.Instance.StartTimer > 0) return;
+
         UpdateButtonInputs();
 
         UpdateMovement();
