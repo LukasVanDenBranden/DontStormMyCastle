@@ -4,9 +4,9 @@ using UnityEngine.UIElements;
 
 public class Pickup : MonoBehaviour
 {
-    private Transform _targetTransform;
+    protected Transform _targetTransform;
 
-    [SerializeField] bool _isForP1; //if true pickup is for p1, else p2
+    [SerializeField] protected bool _isForP1; //if true pickup is for p1, else p2
     private readonly float _attractionForce = 300f;
     private readonly float _pickupDistance = 7f;
 
@@ -40,13 +40,12 @@ public class Pickup : MonoBehaviour
         PlayerAttempsPickup(_isForP1);
     }
 
-    public void PlayerAttempsPickup(bool isP1)
+    public virtual void PlayerAttempsPickup(bool isP1)
     {
         if(isP1)
         {
             if(_isForP1)
             {
-                _targetTransform.gameObject.GetComponent<P1Controller>().PickUpKey();
                 Destroy(gameObject);
             }
         }

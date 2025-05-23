@@ -62,6 +62,9 @@ public class P2Controller : MonoBehaviour
         _boulderCooldownTimer = _boulderCooldown;
         _cameraDefaultDistance = _camera.transform.localPosition.z;
         _cameraDefaultFOV = _camera.fieldOfView;
+        _rotateInput = transform.forward;
+        _lastTrowRotation =transform.rotation;
+        _aimingArrow.rotation = transform.rotation;
     }
     private void FixedUpdate()
     {
@@ -144,7 +147,7 @@ public class P2Controller : MonoBehaviour
             
             float clamp = Mathf.Clamp(rotationy, -70, 70) + 180;
             targetRotation = Quaternion.Euler(0, clamp, 0);
-            _lastTrowRotation = Quaternion.RotateTowards(_lastTrowRotation, targetRotation, Sensitivity * Time.deltaTime);
+            _lastTrowRotation = Quaternion.RotateTowards(_lastTrowRotation, targetRotation, _rotateInput.magnitude * Sensitivity * Time.deltaTime);
         }
 
         _aimingArrow.rotation = _lastTrowRotation;

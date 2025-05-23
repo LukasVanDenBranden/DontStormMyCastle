@@ -10,6 +10,7 @@ public class GameStateScript : MonoBehaviour
     private GameObject Runner;
     [SerializeField] private EventSystem _eventSystem;
     [SerializeField] private Button _restartButton;
+    [SerializeField] private Button _startButton;
 
     public bool _runnerwon; // when the game starts this will always say false only when it's over will this be changed
     public enum GameState
@@ -31,6 +32,8 @@ public class GameStateScript : MonoBehaviour
     {
         if (CurrentState == GameState.TitelScreen) // on start
         {
+            _eventSystem.SetSelectedGameObject(_startButton.gameObject);
+
             if (uiScript._startButtonPressed == true)
             {
                 Time.timeScale = 1;
@@ -42,12 +45,11 @@ public class GameStateScript : MonoBehaviour
         else if (CurrentState == GameState.Playing) // while playing
         {
 
-            if (P1Health.Instance.GetHearths()<= 0 || Runner.transform.position.y <= -20)
+            if (P1Health.Instance.GetHearths() <= 0 || Runner.transform.position.y <= -20)
             {
                 Time.timeScale = 0;
                 uiScript.ActivateGameOverScreen();
                 CurrentState = GameState.GameOver;
-                _eventSystem.SetSelectedGameObject(_restartButton.gameObject);
 
                 //when game over vibrate controllers
                 GamepadManager.Instance.RumbleController(1, 0.3f, 0.05f);
@@ -58,12 +60,15 @@ public class GameStateScript : MonoBehaviour
             {
                 Time.timeScale = 0;
                 _runnerwon = true;
+
                 uiScript.ActivateGameOverScreen();
                 CurrentState = GameState.GameOver;
             }
         }
         else // Game Over
         {
+            _eventSystem.SetSelectedGameObject(_restartButton.gameObject);
+
             if (uiScript._restartButtonPressed == true)
             {
                 AudioManager.Instance.StopMusic();

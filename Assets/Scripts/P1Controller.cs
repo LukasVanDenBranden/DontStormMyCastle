@@ -2,6 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class P1Controller : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class P1Controller : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _camera = GetComponentInChildren<Camera>();
         _floorManager = FindFirstObjectByType<FloorManager>();
+        Camera camera = GetComponent<Camera>();
+        UniversalAdditionalCameraData cameraData = _camera.GetUniversalAdditionalCameraData();
+        cameraData.renderPostProcessing = true;
     }
 
     private void FixedUpdate()

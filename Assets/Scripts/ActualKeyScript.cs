@@ -6,7 +6,7 @@ public class ActualKeyScript : MonoBehaviour
     private FloorManager _floorManager;
     private float _keySpawnTimer;
     private P1Controller p1Controller;
-
+    [SerializeField]private GameObject _keyBurstParticles;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,7 +19,11 @@ public class ActualKeyScript : MonoBehaviour
     {
         transform.position += _floorManager.GetFloorSpeed() * Time.deltaTime * -Vector3.forward;
 
-        if (transform.position.z <= -80) Destroy(gameObject);
+        if (transform.position.z <= -80)
+        {
+            Destroy(gameObject);
+        }
+
     }
 
 }
