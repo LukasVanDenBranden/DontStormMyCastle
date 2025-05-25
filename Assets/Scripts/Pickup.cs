@@ -7,8 +7,6 @@ public class Pickup : MonoBehaviour
     protected Transform _targetTransform;
 
     [SerializeField] protected bool _isForP1; //if true pickup is for p1, else p2
-    private readonly float _attractionForce = 300f;
-    private readonly float _pickupDistance = 7f;
 
     private void Awake()
     {
