@@ -7,6 +7,10 @@ public class Pickup : MonoBehaviour
     protected Transform _targetTransform;
 
     [SerializeField] protected bool _isForP1; //if true pickup is for p1, else p2
+    [SerializeField] private Material[] _materials; //index 0 is never chosen for a pickup
+    [SerializeField] private Renderer _ImageRenderer;
+
+    private int powerupIndex = 0;
 
     private void Awake()
     {
@@ -17,18 +21,20 @@ public class Pickup : MonoBehaviour
         else
         {
             _targetTransform = FindFirstObjectByType<P2Controller>().transform;
-            //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll; //freeze
+        }
+    }
+
+    private void Start()
+    {
+        if(!_isForP1)
+        {
+            powerupIndex = Random.Range(1, _targetTransform.gameObject.GetComponent<P2Controller>()._boulderPrefabList.Count);
+            _ImageRenderer.material = _materials[powerupIndex];
         }
     }
 
     private void FixedUpdate()
     {
-        //pullForce = distance * -1 clamped [0, pickupdistance] then * _attractionForce
-        //float pullForce = Mathf.Clamp01((_pickupDistance - Vector3.Distance(_targetTransform.position, transform.position)) / _pickupDistance) * _attractionForce;
-        //Vector3 pullDirection = (_targetTransform.position - transform.position).normalized;
-
-        //GetComponent<Rigidbody>().AddForce(pullDirection * pullForce);
-
         //if close enough pick up
         if (Vector3.Distance(_targetTransform.position, transform.position) < 2.5f)
             PlayerAttempsPickup(true);
@@ -55,7 +61,7 @@ public class Pickup : MonoBehaviour
             }
             else
             {
-                _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulder();
+                _targetTransform.gameObject.GetComponent<P2Controller>().SpawnSpecialBoulder(powerupIndex);
                 Destroy(gameObject);
             }
         }

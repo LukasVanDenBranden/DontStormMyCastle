@@ -13,7 +13,7 @@ public class P2Controller : MonoBehaviour
     private Rigidbody _rb;
     private Camera _camera;
     private RectTransform _primaryChargeUI;
-    [SerializeField] private List<GameObject> _boulderPrefabList;
+    public List<GameObject> _boulderPrefabList;
     private List<GameObject> _boulderList;
     public static P2Controller instance;
     [SerializeField] private float _primaryMaxThrowForce = 30f;
@@ -231,9 +231,9 @@ public class P2Controller : MonoBehaviour
         _primaryInput = GetComponent<PlayerInput>().actions["Primary"].IsPressed();
     }
 
-    public void SpawnSpecialBoulder()
+    public void SpawnSpecialBoulder(int powerup)
     {
-        _nextBoulderIndex = UnityEngine.Random.Range(1, _boulderPrefabList.Count);
+        _nextBoulderIndex = powerup;
     }
     public int GetNextBoulderIndex() => _nextBoulderIndex;
     public int GetHeltBoulderIndex() => _heldBoulderIndex;
