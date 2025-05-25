@@ -58,4 +58,8 @@ public class ObstacleScript : MonoBehaviour
     {
         _transform.position += new Vector3(0, 0, -_floorManager.GetFloorSpeed() * Time.fixedDeltaTime);
     }
+    private void OnDestroy()
+    {
+        LevelManager.Instance.removeObstacleFromList(gameObject);
+    }
 }

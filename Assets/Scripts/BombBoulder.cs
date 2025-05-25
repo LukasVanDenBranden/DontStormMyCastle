@@ -1,12 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BombBoulder : BoulderBase
 {
     [SerializeField] private GameObject _explosion;
-
+    [SerializeField] private Image _timerImage;
     private float _fuseTimer;
-    private float _fuseDuration = 2;
-
+    private float _fuseDuration = 2f;
     protected override void Start()
     {
         base.Start();
@@ -14,9 +14,8 @@ public class BombBoulder : BoulderBase
     }
     protected override void Update()
     {
+        _timerImage.fillAmount = _fuseTimer / _fuseDuration;
         base.Update();
-        if (!_hasLanded) return;
-
         _fuseTimer -= Time.deltaTime;
 
         if (_fuseTimer <= 0)

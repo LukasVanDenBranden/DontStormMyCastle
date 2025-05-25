@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -8,8 +9,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<GameObject> _pickupPrefabsP1;
     [SerializeField] private List<GameObject> _pickupPrefabsP2;
     [SerializeField] private List<GameObject> _obstaclePrefabs;
+    private List<GameObject> _obstacleList;
     [SerializeField] private GameObject _keyPrefab;
     private FloorManager _floorManager;
+    public static LevelManager Instance;
 
     //stats
     private float _pickupsP2SpawnTime = 7.5f; //in seconds
@@ -20,13 +23,15 @@ public class LevelManager : MonoBehaviour
     //script vars
     private float _pickupP1Timer = 5;
     private float _pickupP2Timer = 5;
-    [SerializeField]private float _obstacleTimer = 0.5f;
+    [SerializeField] private float _obstacleTimer = 0.5f;
     private float _keySpawnTimer = 5f;
     private Vector3 _pickupP2Place = new Vector3(0, 1, -25);
     private float _obstacleSpawnZ = 50f;
     private Transform _pickUpSpawnpoint;
     private void Start()
     {
+        Instance = this;
+        _obstacleList = new List<GameObject>();
         _pickUpSpawnpoint = GameObject.Find("PickUpSpawnPoint").transform;
         _floorManager = FindFirstObjectByType<FloorManager>();
     }
@@ -34,7 +39,7 @@ public class LevelManager : MonoBehaviour
     private void FixedUpdate()
     {
         PlacePickups();
-        
+
         PlaceObstacles();
 
         PlaceKeys();
@@ -52,7 +57,7 @@ public class LevelManager : MonoBehaviour
             _pickupP2Place = _pickUpSpawnpoint.position;
             _pickupP2Place.x = Random.Range(-_trackWidth, _trackWidth);
             Instantiate(_pickupPrefabsP2[Random.Range(0, _pickupPrefabsP2.Count)], _pickupP2Place, Quaternion.identity);
-            _pickupP2Timer += _pickupsP2SpawnTime - _floorManager.GetFloorSpeed()/10;
+            _pickupP2Timer += _pickupsP2SpawnTime - _floorManager.GetFloorSpeed() / 10;
         }
     }
 
@@ -64,7 +69,7 @@ public class LevelManager : MonoBehaviour
         if (_obstacleTimer < 0)
         {
             Vector3 obstacleSpawnPosition = new Vector3(Random.Range(-_trackWidth, _trackWidth), 0, _obstacleSpawnZ);
-            Instantiate(_obstaclePrefabs[Random.Range(0, _obstaclePrefabs.Count)], obstacleSpawnPosition, Quaternion.identity);
+            _obstacleList.Add(Instantiate(_obstaclePrefabs[Random.Range(0, _obstaclePrefabs.Count)], obstacleSpawnPosition, Quaternion.identity));
             _obstacleTimer += _obstacleSpawnTime - _floorManager.GetFloorSpeed() / 100;
         }
     }
@@ -77,12 +82,20 @@ public class LevelManager : MonoBehaviour
 
         if (_keySpawnTimer < 0)
         {
-            Vector3 keySpawnPosition = new Vector3(Random.Range(-_trackWidth, _trackWidth), 5, _obstacleSpawnZ);
+            Vector3 keySpawnPosition = Vector3.zero;
+            do
+            {
+                keySpawnPosition = new Vector3(Random.Range(-_trackWidth, _trackWidth), 5, _obstacleSpawnZ);
+            }
+            while (_obstacleList.Any(o => o.GetComponent<Collider>().bounds.Contains(keySpawnPosition)));
             GameObject key = Instantiate(_keyPrefab, keySpawnPosition, Quaternion.identity);
             _keySpawnTimer += _keySpawnTime - _floorManager.GetFloorSpeed() / 100;
         }
     }
-
+    public void removeObstacleFromList(GameObject obstacle)
+    {
+        _obstacleList.Remove(obstacle);
+    }
     public float GetTrackWidth()
     {
         return _trackWidth;

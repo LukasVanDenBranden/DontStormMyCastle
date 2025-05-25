@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,10 +17,10 @@ public class P1Controller : MonoBehaviour
     [SerializeField] private LayerMask _floorMask;
 
     //stats vars
-    [SerializeField]private  float _walkSpeedSideways = 1000f;
-    [SerializeField] private  float _walkSpeedForward = 300f; //speed difference with floor (if 0 player will go as fast as floor)
-    [SerializeField]private  float _dashTimeout = 5f; //time it takes to recharge dash
-   [SerializeField] private float _dashVelocity = 100f;
+    [SerializeField] private float _walkSpeedSideways = 1000f;
+    [SerializeField] private float _walkSpeedForward = 300f; //speed difference with floor (if 0 player will go as fast as floor)
+    [SerializeField] private float _dashTimeout = 5f; //time it takes to recharge dash
+    [SerializeField] private float _dashVelocity = 100f;
     private readonly float _jumpVelocity = 30f;
     private readonly float _gravityMultiplier = 120f;
 
@@ -41,7 +42,7 @@ public class P1Controller : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(GameStateScript.Instance.StartTimer > 0 )return;
+        if (GameStateScript.Instance.StartTimer > 0) return;
         _timeSinceLastDash += Time.fixedDeltaTime;
         UpdateButtonInputs();
         UpdateMovement();
@@ -92,7 +93,7 @@ public class P1Controller : MonoBehaviour
             _rb.MovePosition(new Vector3(_rb.position.x, hit.point.y + 0.05f, _rb.position.z));
         }
         //apply forces by input
-        _rb.linearVelocity = (inputs + Vector3.up * _rb.linearVelocity.y + gravity + _currentDashVelocity) * _moveSpeedMultiplier + track;
+        _rb.linearVelocity = (inputs + _currentDashVelocity) * _moveSpeedMultiplier + track + gravity + (Vector3.up * _rb.linearVelocity.y);
 
         //add drag
         _currentDashVelocity /= 1.2f;
@@ -145,5 +146,9 @@ public class P1Controller : MonoBehaviour
     public float GetDashCooldown()
     {
         return _timeSinceLastDash / _dashTimeout;
+    }
+    public void ResetDash()
+    {
+        _timeSinceLastDash = _dashTimeout;
     }
 }

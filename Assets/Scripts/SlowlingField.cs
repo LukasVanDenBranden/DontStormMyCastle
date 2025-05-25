@@ -14,7 +14,8 @@ public class SlowlingField : MonoBehaviour
         _deletionTimer -= Time.deltaTime;
         if (_deletionTimer <= 0)
         {
-            Destroy(gameObject);
+            transform.position = new Vector3(int.MaxValue, int.MaxValue, int.MaxValue);
+            Destroy(gameObject, 1f);
         }
     }
     private void OnTriggerStay(Collider other)
