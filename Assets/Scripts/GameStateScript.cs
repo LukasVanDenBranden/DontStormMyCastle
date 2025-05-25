@@ -56,7 +56,7 @@ public class GameStateScript : MonoBehaviour
         else if (CurrentState == GameState.Playing) // while playing
         {
 
-            if (P1Health.Instance.GetHearths() <= 0 || Runner.transform.position.y <= -20)
+            if (P1Health.Instance.GetHearths() <= 0 || Runner.transform.position.y <= -17.5f)
             {
                 Time.timeScale = 0;
                 uiScript.ActivateGameOverScreen();
@@ -67,7 +67,7 @@ public class GameStateScript : MonoBehaviour
                 GamepadManager.Instance.RumbleController(2, 0.3f, 0.05f);
             }
 
-            if (Runner.transform.position.z > 45 && Locks.index >= 3)
+            if (Runner.transform.position.z > 55 && Locks.index >= 3)
             {
                 Time.timeScale = 0;
                 _runnerwon = true;
