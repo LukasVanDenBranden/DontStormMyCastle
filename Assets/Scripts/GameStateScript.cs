@@ -67,7 +67,7 @@ public class GameStateScript : MonoBehaviour
                 GamepadManager.Instance.RumbleController(2, 0.3f, 0.05f);
             }
 
-            if (Runner.transform.position.z > 55 && Locks.index >= 3)
+            if (Runner.transform.position.z > 45 && Locks.index >= 3)
             {
                 Time.timeScale = 0;
                 _runnerwon = true;
